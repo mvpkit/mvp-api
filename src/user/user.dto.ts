@@ -22,3 +22,16 @@ export class UserDto {
 
 }
 
+export class UserLoginDto {
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  password: string;
+
+}
+

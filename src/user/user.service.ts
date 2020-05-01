@@ -1,9 +1,13 @@
-import { UserDto } from './user.dto';
-import { Injectable, BadRequestException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
+
+import {
+    BadRequestException, Injectable, NotFoundException, UnauthorizedException
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+
+import { UserDto, UserLoginDto } from './user.dto';
 import { User } from './user.entity';
-import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UserService {
@@ -20,16 +24,17 @@ export class UserService {
     return this.userRepository.findOne(id);
   }
 
-  async save(userDto: UserDto) : Promise<User> {
-
-    const user = await this.userRepository.findOne({where: {email: userDto.email}});
+  async save(userDto: UserDto): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: { email: userDto.email },
+    });
 
     const data = {
       email: userDto.email,
       password: userDto.password,
       first_name: userDto.first_name,
-      last_name: userDto.last_name
-    }
+      last_name: userDto.last_name,
+    };
     data.password = await bcrypt.hash(userDto.password, 14);
 
     try {
@@ -38,11 +43,25 @@ export class UserService {
     } catch (e) {
       throw e;
     }
-
-
   }
 
   async remove(id: string): Promise<void> {
     await this.userRepository.delete(id);
+  }
+
+  async login(userLoginDto: UserLoginDto) {
+    const user = await this.userRepository.findOne({
+      where: { email: userLoginDto.email },
+    });
+    if (!user) {
+      return UnauthorizedException;
+    }
+
+    const isValid = await bcrypt.compare(userLoginDto.password, user.password);
+
+    if (isValid) {
+      return user;
+    }
+    throw new UnauthorizedException();
   }
 }
