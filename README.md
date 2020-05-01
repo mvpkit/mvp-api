@@ -14,6 +14,7 @@
 
 ## Todo
 - implement JWT to return token upon login
+- implement SSO (Google, Facebook)
 - add send email functionality
 - create user forgot password route
 - create an abstract service method findAll() that takes in pagination and filters
