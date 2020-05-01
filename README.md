@@ -7,12 +7,12 @@
 > Perfect for MVPs and other kickstart projects.
 
 
-> Done
+## What is Done
 - setup Nest.js
 - create user module
 - create user login, register routes
 
-> Todo
+## Todo Pipeline
 - add send email functionality
 - create user forgot password route
 - create an abstract service method findAll() that takes in pagination and filters
