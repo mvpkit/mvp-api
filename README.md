@@ -12,7 +12,8 @@
 - create user module
 - create user login, register routes
 
-## Todo Pipeline
+## Todo
+- implement JWT to return token upon login
 - add send email functionality
 - create user forgot password route
 - create an abstract service method findAll() that takes in pagination and filters
