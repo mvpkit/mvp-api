@@ -1,9 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 
-import {
-    Injectable, UnauthorizedException
-} from '@nestjs/common';
+import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { UserDto, UserLoginDto } from './user.dto';
@@ -54,7 +52,7 @@ export class UserService {
       where: { email: userLoginDto.email },
     });
     if (!user) {
-      return UnauthorizedException;
+      throw new UnauthorizedException();
     }
 
     const isValid = await bcrypt.compare(userLoginDto.password, user.password);
