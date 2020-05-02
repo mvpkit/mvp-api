@@ -1,4 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
+import { DeleteDateColumn } from 'typeorm'
+
 
 @Entity()
 export class User {
@@ -19,5 +21,9 @@ export class User {
 
   @CreateDateColumn()
   created: Date;
+
+
+  @DeleteDateColumn({ name: 'deleted_at' })
+  public deletedAt: Date
 
 }

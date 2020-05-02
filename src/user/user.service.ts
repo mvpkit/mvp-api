@@ -2,7 +2,7 @@ import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 
 import {
-    BadRequestException, Injectable, NotFoundException, UnauthorizedException
+    Injectable, UnauthorizedException
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 

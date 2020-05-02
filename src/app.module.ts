@@ -12,12 +12,12 @@ dotenv.config();
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: process.env.DB_TYPE as any,
-      host: process.env.DB_HOST,
-      port: process.env.DB_PORT as any,
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE,
+      type: process.env.TYPEORM_TYPE as any,
+      host: process.env.TYPEORM_HOST,
+      port: process.env.TYPEORM_PORT as any,
+      username: process.env.TYPEORM_USERNAME,
+      password: process.env.TYPEORM_PASSWORD,
+      database: process.env.TYPEORM_DATABASE,
       entities: [__dirname + '/**/*.entity{.ts}'],
       synchronize: true,
       logging: true,
