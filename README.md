@@ -18,3 +18,4 @@
 - add send email functionality
 - create user forgot password route
 - create an abstract service method findAll() that takes in pagination and filters
+- load config for multiple environments like .env.development, .env.production, etc
