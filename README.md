@@ -12,12 +12,13 @@
 - 05/01/20: create user module
 - 05/01/20: create user login, register routes
 - 05/02/20: implement Passport.js + JWT
+- 05/03/20: add request validatio pipe
 
 ## Todo
 - add Passport strategy for Google SSO
 - add Passport strategy for Facebook SSO
 - add send email functionality
-- add a global Validation Pipe
 - create user forgot password route
 - create an abstract service method findAll() that takes in pagination and filters
 - load config for multiple environments like .env.development, .env.production, etc
+- create a CRUD scaffolder
