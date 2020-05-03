@@ -8,13 +8,14 @@
 
 
 ## What is Done
-- setup Nest.js
-- create user module
-- create user login, register routes
+- 04/30/20: setup Nest.js
+- 05/01/20: create user module
+- 05/01/20: create user login, register routes
+- 05/02/20: implement Passport.js + JWT
 
 ## Todo
-- implement Passport.js
-- implement Passport Strategies (Local, Google, Facebook)
+- add Passport strategy for Google SSO
+- add Passport strategy for Facebook SSO
 - add send email functionality
 - create user forgot password route
 - create an abstract service method findAll() that takes in pagination and filters
