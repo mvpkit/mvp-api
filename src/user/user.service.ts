@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcrypt';
-import { Repository, FindOneOptions } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 
 import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
