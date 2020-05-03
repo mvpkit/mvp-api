@@ -1,9 +1,7 @@
 # Liftjs API using Nest.js
 
 > Liftjs API provides you with a standard set of API routes you normally need for a project.
-
 > We lifted all the heavy-work for you.
-
 > Perfect for MVPs and other kickstart projects.
 
 
