@@ -10,9 +10,10 @@ import {
   Param,
   ParseIntPipe,
   NotFoundException,
+  ConflictException,
 } from '@nestjs/common';
 
-import { UserDto, UserLoginDto } from './user.dto';
+import { User, UserLoginDto } from './user.entity';
 import { UserService } from './user.service';
 
 @Controller('users')
@@ -23,19 +24,25 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   async getAll(@Request() req) {
     const users = await this.userService.findAll();
-    return users;
+
+    return { users, user: req.user };
   }
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   async getOne(@Param('id', ParseIntPipe) id: number) {
     const user = await this.userService.findOne(id);
-    if(!user) throw new NotFoundException;
+    if (!user) throw new NotFoundException();
     return user;
   }
 
   @Post()
-  create(@Body() userDto: UserDto) {
-    return this.userService.save(userDto);
+  async create(@Body() userDto: User) {
+    try {
+      const user = await this.userService.save(userDto);
+      return user;
+    } catch (e) {
+      throw new ConflictException;
+    }
   }
 }

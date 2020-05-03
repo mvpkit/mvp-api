@@ -4,8 +4,7 @@ import { Repository, FindOneOptions } from 'typeorm';
 import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { UserDto, UserLoginDto } from './user.dto';
-import { User } from './user.entity';
+import { User, UserLoginDto } from './user.entity';
 
 @Injectable()
 export class UserService {
@@ -26,7 +25,7 @@ export class UserService {
     return this.userRepository.findOne({ where: { email } });
   }
 
-  async save(userDto: UserDto): Promise<User> {
+  async save(userDto: User): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { email: userDto.email },
     });
