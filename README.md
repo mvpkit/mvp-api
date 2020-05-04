@@ -1,4 +1,4 @@
-# Liftjs is a Nest.js kickstart framework that have done most of the heavy "lifting" for you.
+# Liftjs is a kickstart framework that have done most of the heavy "lifting" for you.
 > It's built as a rapid development framework, which is suitable for MVPs, SaaS, and other startups and projects.
 
 ### Why you'll love it
