@@ -3,7 +3,7 @@
 > Suitable for MVPs, SaaS, and other startups and projects.
 
 ### Why you'll love it
-- pre-configured Config, Auth, and User modules
+- pre-configured Config, Auth, User, Post modules
 - pre-configured Passport authentication that supports common auth strategies including Local, Google, and Facebook
 - pre-configured SMTP emails 
 - a robust base Service class that comes with several useful database related calls
