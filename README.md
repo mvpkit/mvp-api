@@ -6,6 +6,7 @@
 - pre-configured Passport authentication that supports common auth strategies including Local, Google, and Facebook
 - pre-configured SMTP emails 
 - a robust base Service class that comes with several useful database related calls
+- a CRUD scaffolder
 
 ##### Done
 - 04/30/20: setup Nest.js
