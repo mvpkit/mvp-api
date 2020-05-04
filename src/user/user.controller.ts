@@ -1,21 +1,11 @@
-import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 
 import {
-  Body,
-  ConflictException,
-  Controller,
-  Delete,
-  Get,
-  NotFoundException,
-  Param,
-  ParseIntPipe,
-  Patch,
-  Post,
-  Request,
-  UseGuards,
-  InternalServerErrorException,
+    Body, ConflictException, Controller, Delete, Get, InternalServerErrorException,
+    NotFoundException, Param, ParseIntPipe, Patch, Post, Req, Request, UnauthorizedException,
+    UseGuards
 } from '@nestjs/common';
 
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { User, UserLoginDto } from './user.entity';
 import { UserService } from './user.service';
 
@@ -27,6 +17,16 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   async findAll(@Body() data) {
     return this.userService.findAll(data);
+  }
+
+  @Get('me')
+  @UseGuards(JwtAuthGuard)
+  currentUser(
+    @Req() request
+  ) {
+    const user = request.user;
+    if(!user) throw new UnauthorizedException;
+    return user;
   }
 
   @Get(':id')
