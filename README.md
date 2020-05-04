@@ -7,6 +7,8 @@
 - pre-configured SMTP emails 
 - a robust base Service class that comes with several useful database related calls
 - a CRUD scaffolder
+- auto-generated API docs via Swagger
+- ACL / Roles 
 
 ##### Done
 - 04/30/20: setup Nest.js
