@@ -33,8 +33,8 @@ export class UserService {
     const data = {
       email: userDto.email,
       password: userDto.password,
-      first_name: userDto.first_name,
-      last_name: userDto.last_name,
+      firstName: userDto.firstName,
+      lastName: userDto.lastName,
     };
     data.password = await bcrypt.hash(userDto.password, 14);
 

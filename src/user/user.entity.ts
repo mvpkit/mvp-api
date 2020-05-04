@@ -29,15 +29,15 @@ export class User {
   @Column({ nullable: true })
   @ApiProperty()
   @IsOptional()
-  first_name: string;
+  firstName: string;
 
   @Column({ nullable: true })
   @ApiProperty()
   @IsOptional()
-  last_name: string;
+  lastName: string;
 
   @CreateDateColumn()
-  created: Date;
+  createdAt: Date;
 
   @DeleteDateColumn({ name: 'deleted_at' })
   public deletedAt: Date;
