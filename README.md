@@ -1,6 +1,6 @@
 # Liftjs is a kickstart framework with all the heavy "lifting" already done
-> It's built as a rapid development framework
-> Suitable for MVPs, SaaS, and other startups and projects
+> It's built as a rapid development framework.
+> Suitable for MVPs, SaaS, and other startups and projects.
 
 ### Why you'll love it
 - pre-configured Config, Auth, and User modules
