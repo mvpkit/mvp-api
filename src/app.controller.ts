@@ -8,4 +8,14 @@ export class AppController {
     return "Home";
   }
 
+  @Get('about')
+  about(){
+    return "About";
+  }
+
+  @Get('contact')
+  contact(){
+    return "Contact";
+  }
+
 }

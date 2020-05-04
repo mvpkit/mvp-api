@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
+    "@nestjs/config": "^0.4.0",
     "@nestjs/core": "^7.0.0",
     "@nestjs/jwt": "^7.0.0",
     "@nestjs/passport": "^7.0.0",
@@ -43,7 +44,8 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.5.4",
-    "typeorm": "npm:typeorm-plus@0.0.58"
+    "typeorm": "npm:typeorm-plus@0.0.58",
+    "typeorm-naming-strategies": "^1.1.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.0.0",
