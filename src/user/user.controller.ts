@@ -2,15 +2,16 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 
 import {
   Body,
+  ConflictException,
   Controller,
+  Delete,
   Get,
+  NotFoundException,
+  Param,
+  ParseIntPipe,
   Post,
   Request,
   UseGuards,
-  Param,
-  ParseIntPipe,
-  NotFoundException,
-  ConflictException,
 } from '@nestjs/common';
 
 import { User, UserLoginDto } from './user.entity';
@@ -23,9 +24,7 @@ export class UserController {
   @Get()
   @UseGuards(JwtAuthGuard)
   async getAll(@Request() req) {
-    const users = await this.userService.findAll();
-
-    return { users, user: req.user };
+    return this.userService.findAll();
   }
 
   @Get(':id')
@@ -42,7 +41,14 @@ export class UserController {
       const user = await this.userService.save(userDto);
       return user;
     } catch (e) {
-      throw new ConflictException;
+      throw new ConflictException();
     }
+  }
+
+  @Delete(':id')
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    const user = await this.userService.findOne(id);
+    if (!user) throw new NotFoundException();
+    return await this.userService.remove(id);
   }
 }

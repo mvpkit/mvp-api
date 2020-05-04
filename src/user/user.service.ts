@@ -46,8 +46,8 @@ export class UserService {
     }
   }
 
-  async remove(id: string): Promise<void> {
-    await this.userRepository.delete(id);
+  async remove(id: number): Promise<void> {
+    await this.userRepository.softDelete(id);
   }
 
   async login(userLoginDto: UserLoginDto) {
