@@ -1,53 +1,19 @@
 import * as bcrypt from 'bcrypt';
-import { FindOneOptions, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
-import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { User, UserLoginDto } from './user.entity';
+import { BaseService } from 'src/shared/base.service';
 
 @Injectable()
-export class UserService {
+export class UserService extends BaseService<User> {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-  ) {}
-
-  findAll(opts?): Promise<User[]> {
-    return this.userRepository.find(opts);
-  }
-
-  findOne(id: number): Promise<User> {
-    return this.userRepository.findOne(id);
-  }
-
-  findByEmail(email: string): Promise<User> {
-    return this.userRepository.findOne({ where: { email } });
-  }
-
-  async save(userDto: User): Promise<User> {
-    const user = await this.userRepository.findOne({
-      where: { email: userDto.email },
-    });
-
-    const data = {
-      email: userDto.email,
-      password: userDto.password,
-      firstName: userDto.firstName,
-      lastName: userDto.lastName,
-    };
-    data.password = await bcrypt.hash(userDto.password, 14);
-
-    try {
-      const user = await this.userRepository.save(data);
-      return user;
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  async remove(id: number): Promise<void> {
-    await this.userRepository.softDelete(id);
+  ) {
+    super(userRepository);
   }
 
   async login(userLoginDto: UserLoginDto) {
@@ -64,5 +30,26 @@ export class UserService {
       return user;
     }
     throw new UnauthorizedException();
+  }
+
+  async save(userDto: User): Promise<User> {
+    const user = await this.repo.findOne({
+      where: { email: userDto.email },
+    });
+
+    const data = {
+      email: userDto.email,
+      password: userDto.password,
+      firstName: userDto.firstName,
+      lastName: userDto.lastName,
+    };
+    data.password = await bcrypt.hash(userDto.password, 14);
+
+    try {
+      const user = await this.repo.save(data);
+      return user;
+    } catch (e) {
+      throw e;
+    }
   }
 }
