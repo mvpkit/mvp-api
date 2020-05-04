@@ -1,11 +1,13 @@
-# Liftjs API using Nest.js
+# Liftjs is a Nest.js kickstart framework that have done most of the heavy "lifting" for you.
+> It's built as a rapid development framework, which is suitable for MVPs, SaaS and other startups and projects.
 
-> Liftjs API provides you with a standard set of API routes you normally need for a project.
-> We lifted all the heavy-work for you.
-> Perfect for MVPs and other kickstart projects.
+### Why you'll love it
+- pre-configured Config, Auth, and User modules
+- pre-configured Passport authentication that supports common auth strategies including Local, Google, and Facebook
+- pre-configured SMTP emails 
+- a robust base Service class that comes with several useful database related calls
 
-
-## What is Done
+##### Done
 - 04/30/20: setup Nest.js
 - 05/01/20: create user module
 - 05/01/20: create user login, register routes
@@ -15,7 +17,7 @@
 - 05/03/20: add Config module to support .env, .env.development, .env.prod, etc
 - 05/03/20: add a base.service.ts class that has base findOne(), findAll(), etc... for other services to inherit
 
-## Todo
+##### Todo
 - add Passport strategy for Google SSO
 - add Passport strategy for Facebook SSO
 - add send email functionality
