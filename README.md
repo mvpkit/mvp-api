@@ -12,13 +12,13 @@
 - 05/02/20: implement Passport.js + JWT
 - 05/03/20: add request validation pipe
 - 05/03/20: add snake casing Postgres naming strategy
+- 05/03/20: add Config module to support .env, .env.development, .env.prod, etc
+- 05/03/20: add a base.service.ts class that has base findOne(), findAll(), etc... for other services to inherit
 
 ## Todo
-- add Config module
 - add Passport strategy for Google SSO
 - add Passport strategy for Facebook SSO
 - add send email functionality
 - create user forgot password route
 - create an abstract service method findAll() that takes in pagination and filters
-- load config for multiple environments like .env.development, .env.production, etc
 - create a CRUD scaffolder
