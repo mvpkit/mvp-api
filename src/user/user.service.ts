@@ -33,7 +33,7 @@ export class UserService extends BaseService<User> {
   }
 
   async save(userDto: User): Promise<User> {
-    const user = await this.repo.findOne({
+    const user = await this.userRepository.findOne({
       where: { email: userDto.email },
     });
 
@@ -46,7 +46,7 @@ export class UserService extends BaseService<User> {
     data.password = await bcrypt.hash(userDto.password, 14);
 
     try {
-      const user = await this.repo.save(data);
+      const user = await this.userRepository.save(data);
       return user;
     } catch (e) {
       throw e;

@@ -8,7 +8,7 @@ import {
 @Injectable()
 export class BaseService<T> {
 
-  public repo;
+  private repo;
   constructor(repo: Repository<T>){
     this.repo = repo;
   }
@@ -17,17 +17,26 @@ export class BaseService<T> {
     return this.repo.find(opts);
   }
 
-  findOne(id: number): Promise<T> {
-    return this.repo.findOne(id);
+  findOne(opts: number | FindOneOptions): Promise<T> {
+    return this.repo.findOne(opts);
   }
 
   findByEmail(email: string): Promise<T> {
     return this.repo.findOne({ where: { email } });
   }
 
-  async save(data: Partial<T>): Promise<T> {
+  async insert(data: T): Promise<T> {
     try{
-      const T = await this.repo.save(data);
+      const T = await this.repo.insert(data);
+      return T;
+    } catch (e) {
+      throw new InternalServerErrorException;
+    }
+  }
+
+  async update(id: number, data: Partial<T>): Promise<T> {
+    try{
+      const T = await this.repo.update(id, data);
       return T;
     } catch (e) {
       throw new InternalServerErrorException;
