@@ -10,9 +10,11 @@
 - 05/01/20: create user module
 - 05/01/20: create user login, register routes
 - 05/02/20: implement Passport.js + JWT
-- 05/03/20: add request validatio pipe
+- 05/03/20: add request validation pipe
+- 05/03/20: add snake casing Postgres naming strategy
 
 ## Todo
+- add Config module
 - add Passport strategy for Google SSO
 - add Passport strategy for Facebook SSO
 - add send email functionality
