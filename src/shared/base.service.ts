@@ -25,9 +25,9 @@ export class BaseService<T> {
     return this.repo.findOne({ where: { email } });
   }
 
-  async insert(data: T): Promise<T> {
+  async save(data: T): Promise<T> {
     try{
-      const T = await this.repo.insert(data);
+      const T = await this.repo.save(data);
       return T;
     } catch (e) {
       throw new InternalServerErrorException;

@@ -1,8 +1,19 @@
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 
 import {
-    Body, ConflictException, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Patch,
-    Post, Request, UseGuards
+  Body,
+  ConflictException,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Request,
+  UseGuards,
+  InternalServerErrorException,
 } from '@nestjs/common';
 
 import { User, UserLoginDto } from './user.entity';
@@ -27,24 +38,27 @@ export class UserController {
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard)
-  async create(@Body() userDto: User) : Promise<User> {
+  async create(@Body() userDto: User): Promise<User> {
     try {
-      const user = await this.userService.insert(userDto);
-      return user;
+      return await this.userService.save(userDto);
     } catch (e) {
-      throw new ConflictException();
+      if(e.code === '23505'){
+        throw new ConflictException();
+      }
+      throw new InternalServerErrorException();
     }
   }
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
-  async update(@Param('id') id: number, @Body() userDto: Partial<User>) : Promise<User> {
+  async update(
+    @Param('id') id: number,
+    @Body() userDto: Partial<User>,
+  ): Promise<User> {
     try {
-      const user = await this.userService.update(id, userDto);
-      return user;
+      return await this.userService.update(id, userDto);
     } catch (e) {
-      throw new ConflictException();
+      throw new InternalServerErrorException();
     }
   }
 
