@@ -1,4 +1,4 @@
-# Liftjs is a kickstart framework with all the heavy "lifting" already done
+# MVPkit is a kickstart framework for building your next MVP projects
 > It's built as a rapid development framework.
 > Suitable for MVPs, SaaS, and other startups and projects.
 
