@@ -27,7 +27,7 @@
     "@nestjs/jwt": "^7.0.0",
     "@nestjs/passport": "^7.0.0",
     "@nestjs/platform-express": "^7.0.0",
-    "@nestjs/swagger": "^4.5.3",
+    "@nestjs/swagger": "^4.5.4",
     "@nestjs/typeorm": "^7.0.0",
     "@types/bcrypt": "^3.0.0",
     "@types/passport": "^1.0.3",
@@ -44,6 +44,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.5.4",
+    "swagger-ui-express": "^4.1.4",
     "typeorm": "npm:typeorm-plus@0.0.58",
     "typeorm-naming-strategies": "^1.1.0"
   },

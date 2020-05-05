@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { User, UserLoginDto } from './user.entity';
+import { User, UserCreateDto, UserUpdateDto, UserLoginDto } from './user.entity';
 import { BaseService } from 'src/shared/base.service';
 
 @Injectable()
@@ -32,8 +32,19 @@ export class UserService extends BaseService<User> {
     throw new UnauthorizedException();
   }
 
-  async save(userDto: User): Promise<User> {
-    userDto.password = await bcrypt.hash(userDto.password, 14);
-    return await this.userRepository.save(userDto);
+  async create(dto: UserCreateDto): Promise<User> {
+    dto.password = await this.hashPassword(dto.password);
+    return await super.create(dto);
+  }
+
+  async update(id: number, dto: UserUpdateDto): Promise<User> {
+    if(dto.password){
+      dto.password = await this.hashPassword(dto.password);
+    }
+    return await super.update(id, dto);
+  }
+
+  private async hashPassword(password: string){
+    return await bcrypt.hash(password, 14);
   }
 }

@@ -6,10 +6,12 @@ import {
 } from '@nestjs/common';
 
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
-import { User, UserLoginDto } from './user.entity';
+import { User, UserUpdateDto, UserLoginDto, UserCreateDto } from './user.entity';
 import { UserService } from './user.service';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('users')
+@ApiBearerAuth()
 export class UserController {
   constructor(private userService: UserService) {}
 
@@ -38,35 +40,22 @@ export class UserController {
   }
 
   @Post()
-  async create(@Body() userDto: User): Promise<User> {
-    try {
-      return await this.userService.save(userDto);
-    } catch (e) {
-      if(e.code === '23505'){
-        throw new ConflictException();
-      }
-      throw new InternalServerErrorException();
-    }
+  async create(@Body() dto: UserCreateDto): Promise<User> {
+    return await this.userService.create(dto);
   }
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
   async update(
     @Param('id') id: number,
-    @Body() userDto: Partial<User>,
+    @Body() dto: UserUpdateDto,
   ): Promise<User> {
-    try {
-      return await this.userService.update(id, userDto);
-    } catch (e) {
-      throw new InternalServerErrorException();
-    }
+    return await this.userService.update(id, dto);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   async remove(@Param('id', ParseIntPipe) id: number) {
-    const user = await this.userService.findOne(id);
-    if (!user) throw new NotFoundException();
     return await this.userService.remove(id);
   }
 }

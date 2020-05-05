@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, MinLength } from 'class-validator';
 import {
   Column,
   CreateDateColumn,
@@ -17,24 +17,34 @@ export class User {
   id: number;
 
   @Column()
-  @ApiProperty()
-  @IsEmail()
   email: string;
 
   @Column()
-  @ApiProperty()
-  @IsNotEmpty()
   password: string;
 
   @Column({ nullable: true })
-  @ApiProperty()
-  @IsOptional()
   firstName: string;
 
   @Column({ nullable: true })
-  @ApiProperty()
-  @IsOptional()
   lastName: string;
+
+  @Column({ nullable: true })
+  street1: string;
+
+  @Column({ nullable: true })
+  street2: string;
+
+  @Column({ nullable: true })
+  city: string;
+
+  @Column({ nullable: true })
+  state: string;
+
+  @Column({ nullable: true })
+  zip: string;
+
+  @Column({ nullable: true })
+  country: string;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -43,13 +53,34 @@ export class User {
   public deletedAt: Date;
 }
 
-export class UserLoginDto {
-  @ApiProperty()
-  @IsNotEmpty()
+export class UserCreateDto {
   @IsEmail()
   email: string;
 
-  @ApiProperty()
-  @IsNotEmpty()
+  @IsNotEmpty() @MinLength(8)
+  password: string;
+
+  firstName?: string;
+
+  lastName?: string;
+}
+
+export class UserUpdateDto {
+  @IsEmail()
+  email?: string;
+
+  @MinLength(8)
+  password?: string;
+
+  firstName?: string;
+
+  lastName?: string;
+}
+
+export class UserLoginDto {
+  @IsNotEmpty() @IsEmail()
+  email: string;
+
+  @IsNotEmpty() @MinLength(8)
   password: string;
 }
