@@ -1,4 +1,4 @@
-# MVPkit is a kickstart framework for building your next MVP projects
+# MVPkit is a rapid development framework that does one thing well, ship product fast.
 > It's built as a rapid development framework.
 > Suitable for MVPs, SaaS, and other startups and projects.
 
