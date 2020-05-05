@@ -20,6 +20,8 @@
 - 05/03/20: add snake casing Postgres naming strategy
 - 05/03/20: add Config module to support .env, .env.development, .env.prod, etc
 - 05/03/20: add a base.service.ts class that has base findOne(), findAll(), etc... for other services to inherit
+- 05/04/20: add Swagger auto-generated documentation
+- 05/04/20: add Nestjs Swagger plugin
 
 ##### Todo
 - add Passport strategy for Google SSO
