@@ -38,7 +38,8 @@ export class BaseService<T> {
 
   async update(id: number, data: Partial<T>): Promise<T> {
     try{
-      return await this.repo.update(id, data);
+      await this.repo.update(id, data);
+      return this.findOne(id);
     } catch (e) {
       throw new InternalServerErrorException;
     }

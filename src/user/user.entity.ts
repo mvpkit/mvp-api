@@ -67,9 +67,11 @@ export class UserCreateDto {
 
 export class UserUpdateDto {
   @IsEmail()
+  @IsOptional()
   email?: string;
 
   @MinLength(8)
+  @IsOptional()
   password?: string;
 
   firstName?: string;
