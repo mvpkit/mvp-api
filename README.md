@@ -1,5 +1,5 @@
-# MVP Starterkit API is a rapid development framework that does one thing well, ship product fast.
-> It's built as a rapid development framework.
+# MVP Starterkit API is a rapid development API framework for shipping out MVP projects fast.
+> It's built as a rapid development framework built on top of Nest.js.
 > Suitable for MVPs, SaaS, and other startups and projects.
 
 ### Why you'll love it
