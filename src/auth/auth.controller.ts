@@ -1,9 +1,9 @@
-import { UserLoginDto, UserResetPasswordDto } from './../user/user.entity';
-import { Controller, Body, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { ApiOperation } from '@nestjs/swagger';
 
+import { UserChoosePasswordDto, UserLoginDto, UserResetPasswordDto } from '../user/user.entity';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local.guard';
-import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
@@ -20,6 +20,12 @@ export class AuthController {
   @ApiOperation({ summary: 'Reset user password', description: 'Initiate user password reset and sends out an email with the passcode'  })
   async resetPassword(@Body() userResetPassword: UserResetPasswordDto) {
     return this.authService.resetPassword(userResetPassword);
+  }
+
+  @Post('choose-password')
+  @ApiOperation({ summary: 'Choose a user password', description: 'Sets user password with a new one'  })
+  async choosePassword(@Body() userChoosePassword: UserChoosePasswordDto) {
+    return this.authService.choosePassword(userChoosePassword);
   }
 
 }

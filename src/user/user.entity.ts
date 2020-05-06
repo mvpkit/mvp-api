@@ -91,8 +91,15 @@ export class UserLoginDto {
   @IsNotEmpty() @MinLength(8)
   password: string;
 }
-
 export class UserResetPasswordDto {
   @IsNotEmpty() @IsEmail()
   email: string;
+}
+
+export class UserChoosePasswordDto {
+  @IsNotEmpty()
+  resetPasscode: string;
+
+  @IsNotEmpty() @MinLength(8)
+  password: string;
 }

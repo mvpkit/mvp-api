@@ -1,17 +1,24 @@
 import * as bcrypt from 'bcrypt';
+import { BaseService } from 'src/shared/base.service';
 import { Repository } from 'typeorm';
 
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { MailerService } from '@nestjs-modules/mailer';
+import { Injectable, UnauthorizedException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { User, UserCreateDto, UserUpdateDto, UserLoginDto } from './user.entity';
-import { BaseService } from 'src/shared/base.service';
+import {
+  User,
+  UserCreateDto,
+  UserLoginDto,
+  UserUpdateDto,
+} from './user.entity';
 
 @Injectable()
 export class UserService extends BaseService<User> {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    private readonly mailerService: MailerService,
   ) {
     super(userRepository);
   }
@@ -34,21 +41,39 @@ export class UserService extends BaseService<User> {
 
   async create(dto: UserCreateDto): Promise<User> {
     dto.password = await this.hashPassword(dto.password);
-    return await super.create(dto);
+    const user = await super.create(dto);
+    this.sendWelcomeEmail(user);
+    return user;
   }
 
   async update(id: number, dto: UserUpdateDto): Promise<User> {
-    if(dto.password){
+    if (dto.password) {
       dto.password = await this.hashPassword(dto.password);
     }
     return await super.update(id, dto);
   }
 
-  private async hashPassword(password: string){
+  private async hashPassword(password: string) {
     return await bcrypt.hash(password, 14);
   }
 
   findByEmail(email: string): Promise<User> {
     return this.findOne({ where: { email } });
   }
+
+  sendWelcomeEmail(user) {
+    this.mailerService
+      .sendMail({
+        to: user.email,
+        subject: 'Thanks for signing up ✔',
+        text: 'This is a test welcome message',
+      })
+      .then(() => {
+        Logger.log('welcome email sent');
+      })
+      .catch(e => {
+        Logger.error('error sending welcome email', e);
+      });
+  }
+
 }

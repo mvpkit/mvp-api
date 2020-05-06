@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
+import { HandlebarsAdapter, MailerModule } from '@nestjs-modules/mailer';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -27,11 +28,16 @@ import { UserModule } from './user/user.module';
       synchronize: true,
       logging: true,
       autoLoadEntities: true,
-      namingStrategy: new SnakeNamingStrategy()
+      namingStrategy: new SnakeNamingStrategy(),
+    }),
+    MailerModule.forRoot({
+      transport: process.env.SMTP_TRANSPORT, // SMTP_TRANSPORT=smtps://nobrainerlabs@gmail.com:secure1234@smtp.gmail.com
+      defaults: {
+        from: process.env.SMTP_FROM, // SMTP_FROM="Nobrainer Labs" <nobrainerlabs@gmail.com>
+      }
     }),
     UserModule,
-    AuthModule
-
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
