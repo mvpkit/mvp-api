@@ -22,12 +22,13 @@
 - 05/03/20: add a base.service.ts class that has base findOne(), findAll(), etc... for other services to inherit
 - 05/04/20: add Swagger auto-generated documentation
 - 05/04/20: add Nestjs Swagger plugin
+- 05/06/20: added mailer (SMTP)
+- 05/06/20: added POST /auth/reset-password and /auth/choose-password
 
 ##### Todo
 - add Passport strategy for Google SSO
 - add Passport strategy for Facebook SSO
 - add send email functionality
-- create user forgot password route
 - create an abstract service method findAll() that takes in pagination and filters
 - create a CRUD scaffolder
 - add refresh tokens
