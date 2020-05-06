@@ -21,10 +21,6 @@ export class BaseService<T> {
     return this.repo.findOne(opts);
   }
 
-  findByEmail(email: string): Promise<T> {
-    return this.repo.findOne({ where: { email } });
-  }
-
   async create(data: Partial<T>): Promise<T> {
     try{
       return await this.repo.save(data);
