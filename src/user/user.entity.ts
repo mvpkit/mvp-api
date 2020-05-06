@@ -46,6 +46,9 @@ export class User {
   @Column({ nullable: true })
   country: string;
 
+  @Column({ nullable: true })
+  resetPasscode: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
@@ -77,6 +80,8 @@ export class UserUpdateDto {
   firstName?: string;
 
   lastName?: string;
+
+  resetPasscode?: string;
 }
 
 export class UserLoginDto {
@@ -85,4 +90,9 @@ export class UserLoginDto {
 
   @IsNotEmpty() @MinLength(8)
   password: string;
+}
+
+export class UserResetPasswordDto {
+  @IsNotEmpty() @IsEmail()
+  email: string;
 }

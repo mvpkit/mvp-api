@@ -47,4 +47,8 @@ export class UserService extends BaseService<User> {
   private async hashPassword(password: string){
     return await bcrypt.hash(password, 14);
   }
+
+  findByEmail(email: string): Promise<User> {
+    return this.findOne({ where: { email } });
+  }
 }
