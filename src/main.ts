@@ -11,8 +11,9 @@ async function bootstrap() {
 
   const options = new DocumentBuilder()
     .setTitle('Swagger')
-    .setDescription('The API explorer')
-    .setVersion('1.0')
+    .setDescription('API Documentation')
+    .setVersion('0.1')
+    .setContact('Nobrainer Labs', 'https://github.com/nobrainerlabs/mvp-starterkit-api', 'nobrainerlabs@gmail.com')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);

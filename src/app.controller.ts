@@ -5,17 +5,8 @@ export class AppController {
 
   @Get()
   index(){
-    return "Home";
+    return "check /swagger for API documentation";
   }
 
-  @Get('about')
-  about(){
-    return "About";
-  }
-
-  @Get('contact')
-  contact(){
-    return "Contact";
-  }
 
 }

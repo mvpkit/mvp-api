@@ -8,7 +8,7 @@ import {
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { User, UserUpdateDto, UserLoginDto, UserCreateDto } from './user.entity';
 import { UserService } from './user.service';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 
 @Controller('users')
 @ApiBearerAuth()
@@ -17,12 +17,14 @@ export class UserController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Get users', description: 'Retrieve a list of users'  })
   async findAll(@Body() data) {
     return this.userService.findAll(data);
   }
 
   @Get('me')
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Get current user', description: 'Retrieves current logged-in user'  })
   currentUser(
     @Req() request
   ) {
@@ -33,6 +35,7 @@ export class UserController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Get user', description: 'Retrieves a user record by id'  })
   async findOne(@Param('id', ParseIntPipe) id: number) {
     const user = await this.userService.findOne(id);
     if (!user) throw new NotFoundException();
@@ -40,12 +43,14 @@ export class UserController {
   }
 
   @Post()
+  @ApiOperation({ summary: 'Create user', description: 'Creates a user record'  })
   async create(@Body() dto: UserCreateDto): Promise<User> {
     return await this.userService.create(dto);
   }
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Update user', description: 'Update a user record'  })
   async update(
     @Param('id') id: number,
     @Body() dto: UserUpdateDto,
@@ -55,6 +60,7 @@ export class UserController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Delete user', description: 'Delete a user record'  })
   async remove(@Param('id', ParseIntPipe) id: number) {
     return await this.userService.remove(id);
   }
