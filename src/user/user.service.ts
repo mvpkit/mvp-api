@@ -1,26 +1,37 @@
 import * as bcrypt from 'bcrypt';
-import { BaseService } from 'src/shared/base.service';
-import { Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 
 import { MailerService } from '@nestjs-modules/mailer';
-import { Injectable, UnauthorizedException, Logger } from '@nestjs/common';
+import {
+    ConflictException, Injectable, InternalServerErrorException, Logger, NotFoundException,
+    UnauthorizedException
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import {
-  User,
-  UserCreateDto,
-  UserLoginDto,
-  UserUpdateDto,
-} from './user.entity';
+import { User, UserCreateDto, UserLoginDto, UserUpdateDto } from './user.entity';
 
 @Injectable()
-export class UserService extends BaseService<User> {
+export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private readonly mailerService: MailerService,
-  ) {
-    super(userRepository);
+  ) {}
+
+  async findAll(opts?): Promise<User[]> {
+    return this.userRepository.find(opts);
+  }
+
+  async findOne(opts): Promise<User> {
+    return this.userRepository.findOne(opts);
+  }
+
+  async remove(id: number): Promise<void> {
+    const entity = await this.findOne(id);
+    if (!entity) {
+      throw new NotFoundException();
+    }
+    await this.userRepository.softDelete(id);
   }
 
   async login(userLoginDto: UserLoginDto) {
@@ -41,16 +52,30 @@ export class UserService extends BaseService<User> {
 
   async create(dto: UserCreateDto): Promise<User> {
     dto.password = await this.hashPassword(dto.password);
-    const user = await super.create(dto);
-    this.sendWelcomeEmail(user);
-    return user;
+
+    try {
+      const user = await this.userRepository.save(dto);
+      this.sendWelcomeEmail(user);
+      return user;
+    } catch (e) {
+      if (e.code === '23505') {
+        throw new ConflictException();
+      }
+      throw new InternalServerErrorException();
+    }
   }
 
   async update(id: number, dto: UserUpdateDto): Promise<User> {
     if (dto.password) {
       dto.password = await this.hashPassword(dto.password);
     }
-    return await super.update(id, dto);
+
+    try {
+      await this.userRepository.update(id, dto);
+      return this.findOne(id);
+    } catch (e) {
+      throw new InternalServerErrorException();
+    }
   }
 
   private async hashPassword(password: string) {
@@ -75,5 +100,4 @@ export class UserService extends BaseService<User> {
         Logger.error('error sending welcome email', e);
       });
   }
-
 }
