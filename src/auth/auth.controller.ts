@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Request, UseGuards, HttpCode } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 
 import { UserChoosePasswordDto, UserLoginDto, UserResetPasswordDto } from '../user/user.entity';
@@ -11,6 +11,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('login')
+  @HttpCode(200)
   @ApiOperation({ summary: 'Authenticate login', description: 'Authenticate user by email and password'  })
   async login(@Body() userLoginDto: UserLoginDto) {
     return this.authService.login(userLoginDto);

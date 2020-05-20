@@ -15,7 +15,7 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    private readonly mailerService: MailerService,
+    private mailerService: MailerService,
   ) {}
 
   async findAll(opts?): Promise<User[]> {
