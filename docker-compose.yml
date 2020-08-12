@@ -1,7 +1,43 @@
-db:
-  image: postgres:10
-  environment:
-    POSTGRES_DB: "postgres"
-    POSTGRES_HOST_AUTH_METHOD: "trust"
-  ports:
-    - 5432:5432
+version: "3.7"
+
+services:
+  db:
+    image: postgres:11
+    network_mode: bridge
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_PORT: ${DB_PORT}
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - 5432
+  api:
+    restart: always
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/usr/src/app:delegated
+      - /usr/src/app/dist
+      - /usr/src/app/node_modules
+    ports:
+      - 3000
+      #- 9229 # FOR DEBUG
+    command: "yarn start:dev"
+    env_file: ./.env
+    network_mode: bridge
+    tty: true
+    links:
+      - "db"
+    depends_on:
+      - db
+    environment:
+      - VIRTUAL_HOST=api.mvp.docker
+      - VIRTUAL_PORT=3000
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+
