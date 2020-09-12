@@ -20,7 +20,7 @@ import { Crud, CrudUpdateDto, CrudCreateDto } from './crud.entity';
 import { CrudService } from './crud.service';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 
-@Controller('crud')
+@Controller('cruds')
 export class CrudController {
   constructor(private crudService: CrudService) {}
 
