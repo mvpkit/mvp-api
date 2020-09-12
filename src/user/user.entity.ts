@@ -103,3 +103,9 @@ export class UserChoosePasswordDto {
   @IsNotEmpty() @MinLength(8)
   password: string;
 }
+
+export class UserTokenDto {
+  user: User;
+  accessToken: string;
+  expiresIn: string;
+}

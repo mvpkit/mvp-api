@@ -1,4 +1,4 @@
-import { UserChoosePasswordDto } from './../user/user.entity';
+import { User, UserChoosePasswordDto } from './../user/user.entity';
 import { MailerService } from '@nestjs-modules/mailer';
 import {
   Injectable,
@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { UserLoginDto, UserResetPasswordDto } from '../user/user.entity';
+import { UserLoginDto, UserResetPasswordDto, UserTokenDto } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 
 @Injectable()
@@ -30,34 +30,24 @@ export class AuthService {
     return null;
   }
 
-  async login(userLoginDto: UserLoginDto) {
+  async login(userLoginDto: UserLoginDto) : Promise<UserTokenDto> {
     const user = await this.userService.login(userLoginDto);
     if (!user) throw new UnauthorizedException();
-
+    const accessToken = await this.generateAccessToken(user);
     return {
-      ...user,
-      accessToken: this.jwtService.sign({ user }),
-    };
-  }
-
-  async resetPassword(userResetPasswordDto: UserResetPasswordDto) {
-    const user = await this.userService.findByEmail(userResetPasswordDto.email);
-    if (!user) throw new NotFoundException();
-    if (user) {
-      const resetPasscode =
-        Math.random()
-          .toString(36)
-          .substring(2, 15) +
-        Math.random()
-          .toString(36)
-          .substring(2, 15);
-      this.userService.update(user.id, { resetPasscode });
-      this.sendResetPasswordEmail(user, resetPasscode);
-      return { resetPasscode };
+      user, accessToken, expiresIn: process.env.JWT_EXPIRATION
     }
   }
 
-  async choosePassword(userChoosePasswordDto: UserChoosePasswordDto) {
+  async resetPassword(userResetPasswordDto: UserResetPasswordDto) : Promise<void> {
+    const user = await this.userService.findByEmail(userResetPasswordDto.email);
+    if (!user) throw new NotFoundException();
+    if (user) {
+      await this.generateAccessToken(user);
+    }
+  }
+
+  async choosePassword(userChoosePasswordDto: UserChoosePasswordDto) : Promise<User> {
     Logger.log('choosing password');
     const user = await this.userService.findOne({
       where: { resetPasscode: userChoosePasswordDto.resetPasscode },
@@ -69,12 +59,16 @@ export class AuthService {
     });
   }
 
-  sendResetPasswordEmail(user, resetPasscode) {
+  async sendResetPasswordEmail(user: User, resetPasscode: string) : Promise<void> {
     this.mailerService.sendMail({
       to: user.email,
       subject: 'Forgot Password',
       text: `Forgot your password? Click here to reset it: http://${process.env.SITE_HOST}/reset-password?resetPasscode=${resetPasscode}`,
       html: `Click here to reset your password: <a href="http://${process.env.SITE_HOST}/reset-password?resetPasscode=${resetPasscode}">Reset Password</b>`,
     });
+  }
+
+  async generateAccessToken(user: User) : Promise<string> {
+    return this.jwtService.sign({ user: { id: user.id} }, { expiresIn: process.env.JWT_EXPIRATION})
   }
 }
