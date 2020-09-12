@@ -1,5 +1,3 @@
-import { CrudCommand } from './crud/crud.command';
-import { UserCommand } from './user/user.command';
 import { CommandModule } from 'nestjs-command';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
@@ -11,7 +9,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { CrudCommand } from './crud/crud.command';
 import { CrudModule } from './crud/crud.module';
+import { UserCommand } from './user/user.command';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -42,7 +42,6 @@ import { UserModule } from './user/user.module';
     UserModule,
     CommandModule,
     AuthModule,
-    CrudModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserCommand, CrudCommand],

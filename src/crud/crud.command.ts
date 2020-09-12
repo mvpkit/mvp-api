@@ -1,5 +1,7 @@
 import { Command } from 'nestjs-command';
+
 import { Injectable, Logger } from '@nestjs/common';
+
 import { CrudService } from './crud.service';
 
 @Injectable()
