@@ -1,5 +1,3 @@
-import { ComputerModule } from './computer/computer.module';
-import { ShoeModule } from './shoe/shoe.module';
 import { CrudCommand } from './crud/crud.command';
 import { UserCommand } from './user/user.command';
 import { CommandModule } from 'nestjs-command';
@@ -45,8 +43,6 @@ import { UserModule } from './user/user.module';
     CommandModule,
     AuthModule,
     CrudModule,
-    ShoeModule,
-    ComputerModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserCommand, CrudCommand],
