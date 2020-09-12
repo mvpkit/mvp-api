@@ -1,0 +1,6 @@
+{
+  "tslint.autoFixOnSave": true,
+  "editor.formatOnSave": true,
+  "html.format.wrapAttributes": "force",
+  "typescript.preferences.importModuleSpecifier": "relative"
+}

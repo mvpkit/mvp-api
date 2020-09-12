@@ -8,7 +8,11 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { UserLoginDto, UserResetPasswordDto, UserTokenDto } from '../user/user.entity';
+import {
+  UserLoginDto,
+  UserResetPasswordDto,
+  UserTokenDto,
+} from '../user/user.entity';
 import { UserService } from '../user/user.service';
 
 @Injectable()
@@ -21,25 +25,31 @@ export class AuthService {
 
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.userService.findByEmail(username);
+
     if (!user) throw new NotFoundException();
 
     if (user && user.password === pass) {
       const { password, ...result } = user;
       return result;
     }
+
     return null;
   }
 
-  async login(userLoginDto: UserLoginDto) : Promise<UserTokenDto> {
+  async login(userLoginDto: UserLoginDto): Promise<UserTokenDto> {
     const user = await this.userService.login(userLoginDto);
     if (!user) throw new UnauthorizedException();
     const accessToken = await this.generateAccessToken(user);
     return {
-      user, accessToken, expiresIn: process.env.JWT_EXPIRATION
-    }
+      user,
+      accessToken,
+      expiresIn: process.env.JWT_EXPIRATION,
+    };
   }
 
-  async resetPassword(userResetPasswordDto: UserResetPasswordDto) : Promise<void> {
+  async resetPassword(
+    userResetPasswordDto: UserResetPasswordDto,
+  ): Promise<void> {
     const user = await this.userService.findByEmail(userResetPasswordDto.email);
     if (!user) throw new NotFoundException();
     if (user) {
@@ -47,7 +57,9 @@ export class AuthService {
     }
   }
 
-  async choosePassword(userChoosePasswordDto: UserChoosePasswordDto) : Promise<User> {
+  async choosePassword(
+    userChoosePasswordDto: UserChoosePasswordDto,
+  ): Promise<User> {
     Logger.log('choosing password');
     const user = await this.userService.findOne({
       where: { resetPasscode: userChoosePasswordDto.resetPasscode },
@@ -59,7 +71,10 @@ export class AuthService {
     });
   }
 
-  async sendResetPasswordEmail(user: User, resetPasscode: string) : Promise<void> {
+  async sendResetPasswordEmail(
+    user: User,
+    resetPasscode: string,
+  ): Promise<void> {
     this.mailerService.sendMail({
       to: user.email,
       subject: 'Forgot Password',
@@ -68,7 +83,10 @@ export class AuthService {
     });
   }
 
-  async generateAccessToken(user: User) : Promise<string> {
-    return this.jwtService.sign({ user: { id: user.id} }, { expiresIn: process.env.JWT_EXPIRATION})
+  async generateAccessToken(user: User): Promise<string> {
+    return this.jwtService.sign(
+      { user: { id: user.id } },
+      { expiresIn: process.env.JWT_EXPIRATION },
+    );
   }
 }

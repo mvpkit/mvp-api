@@ -78,15 +78,11 @@ export class UserService {
     }
   }
 
-  private async hashPassword(password: string) {
-    return await bcrypt.hash(password, 14);
-  }
-
-  findByEmail(email: string): Promise<User> {
+  async findByEmail(email: string): Promise<User> {
     return this.findOne({ where: { email } });
   }
 
-  sendWelcomeEmail(user) {
+  async sendWelcomeEmail(user) {
     this.mailerService
       .sendMail({
         to: user.email,
@@ -99,5 +95,9 @@ export class UserService {
       .catch(e => {
         Logger.error('error sending welcome email', e);
       });
+  }
+
+  private async hashPassword(password: string) {
+    return await bcrypt.hash(password, 14);
   }
 }

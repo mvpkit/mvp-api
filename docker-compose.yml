@@ -1,4 +1,4 @@
-version: "3.7"
+version: '3.7'
 
 services:
   db:
@@ -19,7 +19,6 @@ services:
       target: development
     volumes:
       - .:/usr/src/app:delegated
-      - /usr/src/app/dist
       - /usr/src/app/node_modules
     ports:
       - ${VIRTUAL_PORT}
@@ -28,7 +27,7 @@ services:
     network_mode: bridge
     tty: true
     links:
-      - "db"
+      - 'db'
     depends_on:
       - db
     environment:
@@ -36,8 +35,8 @@ services:
       - VIRTUAL_PORT=${VIRTUAL_PORT}
     logging:
       options:
-        max-size: "10m"
-        max-file: "3"
+        max-size: '10m'
+        max-file: '3'
   adminer:
     image: adminer
     restart: always
@@ -50,4 +49,3 @@ services:
     network_mode: bridge
     links:
       - db
-
