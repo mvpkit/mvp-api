@@ -11,9 +11,10 @@ export class CrudCommand {
     describe: 'creates a crud with a given entity',
   })
   async create() {
+    const pluralize = require('pluralize');
     const exec = require('child_process').execSync;
-    const entity = process.argv[3];
-    Logger.log(`creating ./src/${entity} ... `);
+    const entity = pluralize(process.argv[3], 1).toLowerCase();
+    Logger.log(`Creating ./src/${entity} ... `);
 
     // create folder and copy the files from ./src/crud to ./src/${entity}
     try {
@@ -41,7 +42,6 @@ export class CrudCommand {
       );
 
       // search and replace all instances of crud to entity
-      const pluralize = require('pluralize');
       await this.replaceAll({
         files: [`/usr/src/app/src/${entity}/*.ts`],
         from: /cruds/g,
@@ -63,7 +63,10 @@ export class CrudCommand {
         to: this.capitalize(entity),
       });
 
-      Logger.log(`All done ✅`);
+      Logger.log(`Done `);
+      Logger.log(
+        `Next, update your ./src/app.module.ts by importing ${entity}.module.ts on the imports section to activate it `,
+      );
     } catch (e) {
       return;
     }
