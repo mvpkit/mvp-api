@@ -1,4 +1,5 @@
-import { CrudModule } from './crud/crud.module';
+import { UserCommand } from './user/user.command';
+import { CommandModule } from 'nestjs-command';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 import { MailerModule } from '@nestjs-modules/mailer';
@@ -9,6 +10,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { CrudModule } from './crud/crud.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -37,10 +39,11 @@ import { UserModule } from './user/user.module';
       },
     }),
     UserModule,
+    CommandModule,
     AuthModule,
     CrudModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, UserCommand],
 })
 export class AppModule {}

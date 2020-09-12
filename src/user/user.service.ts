@@ -3,12 +3,21 @@ import { FindOneOptions, Repository } from 'typeorm';
 
 import { MailerService } from '@nestjs-modules/mailer';
 import {
-    ConflictException, Injectable, InternalServerErrorException, Logger, NotFoundException,
-    UnauthorizedException
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { User, UserCreateDto, UserLoginDto, UserUpdateDto } from './user.entity';
+import {
+  User,
+  UserCreateDto,
+  UserLoginDto,
+  UserUpdateDto,
+} from './user.entity';
 
 @Injectable()
 export class UserService {
@@ -51,6 +60,7 @@ export class UserService {
   }
 
   async create(dto: UserCreateDto): Promise<User> {
+    console.log('creating', dto);
     dto.password = await this.hashPassword(dto.password);
 
     try {
@@ -92,7 +102,7 @@ export class UserService {
       .then(() => {
         Logger.log('welcome email sent');
       })
-      .catch(e => {
+      .catch((e) => {
         Logger.error('error sending welcome email', e);
       });
   }

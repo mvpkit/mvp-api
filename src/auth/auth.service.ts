@@ -14,6 +14,7 @@ import {
   UserTokenDto,
 } from '../user/user.entity';
 import { UserService } from '../user/user.service';
+import { access } from 'fs';
 
 @Injectable()
 export class AuthService {
@@ -56,7 +57,8 @@ export class AuthService {
     if (!user) throw new NotFoundException();
     if (user) {
       const accessToken = await this.generateAccessToken(user);
-      return accessToken;
+      const res = await this.sendResetPasswordEmail(user, accessToken);
+      Logger.log(`forgot password: ${JSON.stringify(res)}`);
     }
   }
 
@@ -74,8 +76,8 @@ export class AuthService {
     });
   }
 
-  async sendResetPasswordEmail(user: User, accessToken: string): Promise<void> {
-    this.mailerService.sendMail({
+  async sendResetPasswordEmail(user: User, accessToken: string): Promise<any> {
+    return this.mailerService.sendMail({
       to: user.email,
       subject: 'Forgot Password',
       text: `Forgot your password? Click here to reset it: http://${process.env.SITE_HOST}/reset-password?token=${accessToken}`,
