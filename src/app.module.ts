@@ -42,6 +42,7 @@ import { UserModule } from './user/user.module';
     UserModule,
     CommandModule,
     AuthModule,
+    CrudModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserCommand, CrudCommand],

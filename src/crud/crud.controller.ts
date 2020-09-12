@@ -56,7 +56,7 @@ export class CrudController {
   @Patch(':id')
   @ApiOperation({ summary: 'Update crud', description: 'Update a crud record' })
   async update(
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() dto: CrudUpdateDto,
   ): Promise<Crud> {
     return await this.crudService.update(id, dto);

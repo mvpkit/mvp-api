@@ -58,7 +58,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^6.5.4",
     "swagger-ui-express": "^4.1.4",
-    "typeorm": "npm:typeorm-plus@0.0.58",
+    "typeorm": "0.2.26",
     "typeorm-naming-strategies": "^1.1.0",
     "uuid": "^8.3.0"
   },
