@@ -11,7 +11,7 @@ services:
       POSTGRES_PORT: ${DB_PORT}
       PG_DATA: /var/lib/postgresql/data
     ports:
-      - 5432
+      - 5454:5432
   api:
     restart: always
     build:

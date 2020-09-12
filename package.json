@@ -20,7 +20,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "bash": "docker-compose exec api bash"
+    "bash": "docker-compose exec api bash",
+    "task": "npx nestjs-command"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.4.2",

@@ -1,3 +1,4 @@
+import { CrudCommand } from './crud/crud.command';
 import { UserCommand } from './user/user.command';
 import { CommandModule } from 'nestjs-command';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
@@ -44,6 +45,6 @@ import { UserModule } from './user/user.module';
     CrudModule,
   ],
   controllers: [AppController],
-  providers: [AppService, UserCommand],
+  providers: [AppService, UserCommand, CrudCommand],
 })
 export class AppModule {}

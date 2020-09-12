@@ -67,12 +67,11 @@ export class AuthService {
   ): Promise<User> {
     Logger.log('choosing password');
     const user = await this.userService.findOne({
-      where: { resetPasscode: userChoosePasswordDto.resetPasscode },
+      where: { accessToken: userChoosePasswordDto.accessToken },
     });
     if (!user) throw new NotFoundException();
     return await this.userService.update(user.id, {
       password: userChoosePasswordDto.password,
-      resetPasscode: null,
     });
   }
 
