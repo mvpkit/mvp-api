@@ -24,10 +24,10 @@
 - 05/04/20: add Nestjs Swagger plugin
 - 05/06/20: added nodemailer to send emails (SMTP)
 - 05/06/20: added POST /auth/reset-password and /auth/choose-password
+- 09/11/20: added docker compose support
+- 09/12/20: added crud generator
 
 ##### Todo
-- add Passport strategy for Google SSO
-- add Passport strategy for Facebook SSO
-- create an abstract service method findAll() that takes in pagination and filters
-- create a CRUD scaffolder
-- add refresh tokens
+- [ ] add Passport strategy for Google SSO
+- [ ] add Passport strategy for Facebook SSO
+- [ ] add paginator support fo findAll
