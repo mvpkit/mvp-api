@@ -34,7 +34,8 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 # private environments
+.env
 .env.development
 .env.staging
 .env.production
-.env
+
