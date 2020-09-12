@@ -1,5 +1,5 @@
 import { UserCreateDto } from './user.entity';
-import { Command, Positional } from 'nestjs-command';
+import { Command } from 'nestjs-command';
 import { Injectable } from '@nestjs/common';
 import { UserService } from './user.service';
 
@@ -8,9 +8,8 @@ export class UserCommand {
   constructor(private readonly userService: UserService) {}
 
   @Command({
-    command: 'create:user <email> <password>',
+    command: 'user:create <email> <password>',
     describe: 'create a user',
-    autoExit: false,
   })
   async create() {
     const dto = new UserCreateDto();
@@ -18,5 +17,14 @@ export class UserCommand {
     dto.password = process.argv[4];
     const user = await this.userService.create(dto);
     console.log(user);
+  }
+
+  @Command({
+    command: 'user:findAll',
+    describe: 'list all users',
+  })
+  async list() {
+    const users = await this.userService.findAll();
+    console.log(users);
   }
 }
