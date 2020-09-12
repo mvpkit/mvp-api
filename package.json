@@ -1,8 +1,8 @@
 {
   "name": "liftjs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
-  "author": "",
+  "author": "jaequery@gmail.com",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
