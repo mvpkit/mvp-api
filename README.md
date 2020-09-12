@@ -28,6 +28,6 @@
 - 09/12/20: added crud generator
 
 ##### Todo
-[] add Passport strategy for Google SSO
-[] add Passport strategy for Facebook SSO
-[] add paginator support fo findAll
+- [ ] add Passport strategy for Google SSO
+- [ ] add Passport strategy for Facebook SSO
+- [ ] add paginator support fo findAll
