@@ -1,3 +1,4 @@
+import { CrudModule } from './crud/crud.module';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 import { MailerModule } from '@nestjs-modules/mailer';
@@ -14,7 +15,7 @@ import { UserModule } from './user/user.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env.production', '.env'],
+      envFilePath: ['.env'],
     }),
     TypeOrmModule.forRoot({
       type: process.env.DB_TYPE as any,
@@ -37,6 +38,7 @@ import { UserModule } from './user/user.module';
     }),
     UserModule,
     AuthModule,
+    CrudModule,
   ],
   controllers: [AppController],
   providers: [AppService],

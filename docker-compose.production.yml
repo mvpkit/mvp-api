@@ -16,15 +16,15 @@ services:
     restart: always
     build:
       context: .
-      target: development
+      target: production
     volumes:
       - .:/usr/src/app:delegated
       - /usr/src/app/dist
       - /usr/src/app/node_modules
     ports:
       - ${VIRTUAL_PORT}
-    command: "yarn start:dev"
-    env_file: ./.env
+    command: "node dist/main"
+    env_file: ./.env.production
     network_mode: bridge
     tty: true
     links:
@@ -38,18 +38,5 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-  pgadmin:
-    image: dpage/pgadmin4
-    network_mode: bridge
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=test@test.com
-      - PGADMIN_DEFAULT_PASSWORD=asdfasdf
-      - PGADMIN_LISTEN_PORT=8888
-      - VIRTUAL_HOST=mvpdb.docker
-      - VIRTUAL_PORT=8888
-    ports:
-      - 8888
-    links:
-      - db
-    restart: always
+
 

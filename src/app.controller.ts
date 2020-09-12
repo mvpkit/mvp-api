@@ -9,4 +9,10 @@ export class AppController {
   }
 
 
+  @Get('dumb')
+  async dumb() {
+    return `so dummy ${process.env.DUMBO}`
+  }
+
+
 }

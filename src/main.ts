@@ -1,4 +1,4 @@
-import { ValidationPipe, Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
@@ -13,14 +13,14 @@ async function bootstrap() {
     .setTitle('Swagger')
     .setDescription('API Documentation')
     .setVersion('0.2')
-    .setContact('Nobrainer Labs', 'https://github.com/nobrainerlabs/mvp-starterkit-api', 'nobrainerlabs@gmail.com')
+    .setContact('nobrainerlabs.com', 'https://github.com/nobrainerlabs/mvp-starterkit-api', 'nobrainerlabs@gmail.com')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('swagger', app, document);
 
-  await app.listen(process.env.PORT);
+  await app.listen(process.env.VIRTUAL_PORT);
 
-  console.log(`app listening on: http://${process.env.HOST}`)
+  Logger.log(`app listening on: http://${process.env.VIRTUAL_HOST} on ${process.env.NODE_ENV} mode`)
 }
 bootstrap();
