@@ -11,43 +11,12 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
-@Unique(['email'])
 export class Crud {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  email: string;
-
-  @Column()
-  password: string;
-
-  @Column({ nullable: true })
-  firstName: string;
-
-  @Column({ nullable: true })
-  lastName: string;
-
-  @Column({ nullable: true })
-  street1: string;
-
-  @Column({ nullable: true })
-  street2: string;
-
-  @Column({ nullable: true })
-  city: string;
-
-  @Column({ nullable: true })
-  state: string;
-
-  @Column({ nullable: true })
-  zip: string;
-
-  @Column({ nullable: true })
-  country: string;
-
-  @Column({ nullable: true })
-  resetPasscode: string;
+  name: string;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -57,49 +26,11 @@ export class Crud {
 }
 
 export class CrudCreateDto {
-  @IsEmail()
-  email: string;
-
-  @IsNotEmpty() @MinLength(8)
-  password: string;
-
-  firstName?: string;
-
-  lastName?: string;
+  @IsNotEmpty()
+  name: string;
 }
 
 export class CrudUpdateDto {
-  @IsEmail()
   @IsOptional()
-  email?: string;
-
-  @MinLength(8)
-  @IsOptional()
-  password?: string;
-
-  firstName?: string;
-
-  lastName?: string;
-
-  resetPasscode?: string;
-}
-
-export class CrudLoginDto {
-  @IsNotEmpty() @IsEmail()
-  email: string;
-
-  @IsNotEmpty() @MinLength(8)
-  password: string;
-}
-export class CrudResetPasswordDto {
-  @IsNotEmpty() @IsEmail()
-  email: string;
-}
-
-export class CrudChoosePasswordDto {
-  @IsNotEmpty()
-  resetPasscode: string;
-
-  @IsNotEmpty() @MinLength(8)
-  password: string;
+  name?: string;
 }

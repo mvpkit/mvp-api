@@ -23,7 +23,7 @@ services:
       - /usr/src/app/node_modules
     ports:
       - ${VIRTUAL_PORT}
-    command: "yarn start:dev"
+    command: bash -c "yarn && yarn start:dev"
     env_file: ./.env
     network_mode: bridge
     tty: true
@@ -38,18 +38,16 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-  pgadmin:
-    image: dpage/pgadmin4
-    network_mode: bridge
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=test@test.com
-      - PGADMIN_DEFAULT_PASSWORD=asdfasdf
-      - PGADMIN_LISTEN_PORT=8888
-      - VIRTUAL_HOST=mvpdb.docker
-      - VIRTUAL_PORT=8888
+  adminer:
+    image: adminer
+    restart: always
     ports:
-      - 8888
+      - 8080
+    environment:
+      - VIRTUAL_HOST=adminer.docker
+      - VIRTUAL_PORT=8080
+      - ADMINER_DESIGN=nette
+    network_mode: bridge
     links:
       - db
-    restart: always
 

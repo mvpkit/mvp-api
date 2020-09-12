@@ -34,7 +34,7 @@ import { UserModule } from './user/user.module';
       transport: process.env.SMTP_TRANSPORT, // SMTP_TRANSPORT=smtps://nobrainerlabs@gmail.com:secure1234@smtp.gmail.com
       defaults: {
         from: process.env.SMTP_FROM, // SMTP_FROM="Nobrainer Labs" <nobrainerlabs@gmail.com>
-      }
+      },
     }),
     UserModule,
     AuthModule,
