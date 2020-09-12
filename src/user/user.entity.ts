@@ -60,7 +60,8 @@ export class UserCreateDto {
   @IsEmail()
   email: string;
 
-  @IsNotEmpty() @MinLength(8)
+  @IsNotEmpty()
+  @MinLength(8)
   password: string;
 
   firstName?: string;
@@ -85,14 +86,17 @@ export class UserUpdateDto {
 }
 
 export class UserLoginDto {
-  @IsNotEmpty() @IsEmail()
+  @IsNotEmpty()
+  @IsEmail()
   email: string;
 
-  @IsNotEmpty() @MinLength(8)
+  @IsNotEmpty()
+  @MinLength(8)
   password: string;
 }
-export class UserResetPasswordDto {
-  @IsNotEmpty() @IsEmail()
+export class UserForgotPasswordDto {
+  @IsNotEmpty()
+  @IsEmail()
   email: string;
 }
 
@@ -100,7 +104,8 @@ export class UserChoosePasswordDto {
   @IsNotEmpty()
   resetPasscode: string;
 
-  @IsNotEmpty() @MinLength(8)
+  @IsNotEmpty()
+  @MinLength(8)
   password: string;
 }
 

@@ -10,7 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 
 import {
   UserLoginDto,
-  UserResetPasswordDto,
+  UserForgotPasswordDto,
   UserTokenDto,
 } from '../user/user.entity';
 import { UserService } from '../user/user.service';
@@ -47,13 +47,16 @@ export class AuthService {
     };
   }
 
-  async resetPassword(
-    userResetPasswordDto: UserResetPasswordDto,
+  async forgotPassword(
+    userForgotPasswordDto: UserForgotPasswordDto,
   ): Promise<void> {
-    const user = await this.userService.findByEmail(userResetPasswordDto.email);
+    const user = await this.userService.findByEmail(
+      userForgotPasswordDto.email,
+    );
     if (!user) throw new NotFoundException();
     if (user) {
-      await this.generateAccessToken(user);
+      const accessToken = await this.generateAccessToken(user);
+      return accessToken;
     }
   }
 
@@ -71,15 +74,12 @@ export class AuthService {
     });
   }
 
-  async sendResetPasswordEmail(
-    user: User,
-    resetPasscode: string,
-  ): Promise<void> {
+  async sendResetPasswordEmail(user: User, accessToken: string): Promise<void> {
     this.mailerService.sendMail({
       to: user.email,
       subject: 'Forgot Password',
-      text: `Forgot your password? Click here to reset it: http://${process.env.SITE_HOST}/reset-password?resetPasscode=${resetPasscode}`,
-      html: `Click here to reset your password: <a href="http://${process.env.SITE_HOST}/reset-password?resetPasscode=${resetPasscode}">Reset Password</b>`,
+      text: `Forgot your password? Click here to reset it: http://${process.env.SITE_HOST}/reset-password?token=${accessToken}`,
+      html: `Click here to reset your password: <a href="http://${process.env.SITE_HOST}/reset-password?token=${accessToken}">Reset Password</b>`,
     });
   }
 
