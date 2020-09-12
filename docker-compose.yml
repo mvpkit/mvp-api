@@ -22,8 +22,7 @@ services:
       - /usr/src/app/dist
       - /usr/src/app/node_modules
     ports:
-      - 3000
-      #- 9229 # FOR DEBUG
+      - ${PORT}
     command: "yarn start:dev"
     env_file: ./.env
     network_mode: bridge
@@ -33,8 +32,8 @@ services:
     depends_on:
       - db
     environment:
-      - VIRTUAL_HOST=api.mvp.docker
-      - VIRTUAL_PORT=3000
+      - VIRTUAL_HOST=${HOST}
+      - VIRTUAL_PORT=${PORT}
     logging:
       options:
         max-size: "10m"

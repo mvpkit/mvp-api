@@ -21,6 +21,6 @@ async function bootstrap() {
 
   await app.listen(process.env.PORT);
 
-  console.log(`app listening on: http://${process.env.VIRTUAL_HOST}`)
+  console.log(`app listening on: http://${process.env.HOST}`)
 }
 bootstrap();
