@@ -1,3 +1,4 @@
+import { AccessControlModule } from 'nest-access-control';
 import { CommandModule } from 'nestjs-command';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
@@ -7,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppController } from './app.controller';
+import { roles } from './app.roles';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { CrudCommand } from './crud/crud.command';
@@ -39,6 +41,7 @@ import { UserModule } from './user/user.module';
         from: process.env.SMTP_FROM, // SMTP_FROM="Nobrainer Labs" <nobrainerlabs@gmail.com>
       },
     }),
+    AccessControlModule.forRoles(roles),
     UserModule,
     CommandModule,
     AuthModule,
