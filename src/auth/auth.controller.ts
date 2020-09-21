@@ -61,4 +61,14 @@ export class AuthController {
   googleAuthRedirect(@Req() req) {
     return this.authService.loginGoogle(req);
   }
+
+  @Get('facebook')
+  @UseGuards(AuthGuard('facebook'))
+  async facebookAuth(@Req() req) {}
+
+  @Get('facebook/redirect')
+  @UseGuards(AuthGuard('facebook'))
+  facebookAuthRedirect(@Req() req) {
+    return this.authService.loginFacebook(req);
+  }
 }

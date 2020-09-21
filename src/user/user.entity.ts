@@ -159,3 +159,21 @@ export class UserSsoGoogleDto {
   @IsNotEmpty()
   lastName: string;
 }
+
+export class UserSsoFacebookDto {
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  source: UserSource;
+
+  @IsOptional()
+  picture: string;
+
+  @IsNotEmpty()
+  firstName: string;
+
+  @IsNotEmpty()
+  lastName: string;
+}
