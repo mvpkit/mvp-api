@@ -1,10 +1,13 @@
+import { AuthGuard } from '@nestjs/passport';
 import {
   Body,
   Controller,
+  Get,
   Post,
   Request,
   UseGuards,
   HttpCode,
+  Req,
 } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 
@@ -47,5 +50,15 @@ export class AuthController {
   })
   async choosePassword(@Body() userChoosePassword: UserChoosePasswordDto) {
     return this.authService.choosePassword(userChoosePassword);
+  }
+
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth(@Req() req) {}
+
+  @Get('google/redirect')
+  @UseGuards(AuthGuard('google'))
+  googleAuthRedirect(@Req() req) {
+    return this.authService.loginGoogle(req);
   }
 }

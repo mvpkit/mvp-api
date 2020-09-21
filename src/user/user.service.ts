@@ -14,9 +14,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import {
   User,
-  UserCreateDto,
+  UserRegisterDto,
+  UserSsoGoogleDto,
   UserLoginDto,
   UserUpdateDto,
+  UserSource,
 } from './user.entity';
 
 @Injectable()
@@ -54,15 +56,19 @@ export class UserService {
     const isValid = await bcrypt.compare(userLoginDto.password, user.password);
 
     if (isValid) {
+      await this.loggedIn(user);
       return user;
     }
     throw new UnauthorizedException();
   }
 
-  async create(dto: UserCreateDto): Promise<User> {
-    console.log('creating', dto);
+  async register(dto: UserRegisterDto): Promise<User> {
     dto.password = await this.hashPassword(dto.password);
+    return this.create(dto);
+  }
 
+  async create(dto: Partial<User>): Promise<User> {
+    console.log('creating', dto);
     try {
       const user = await this.userRepository.save(dto);
       this.sendWelcomeEmail(user);
@@ -105,6 +111,16 @@ export class UserService {
       .catch((e) => {
         Logger.error('error sending welcome email', e);
       });
+  }
+
+  /**
+   * declare a user have successfully been identified
+   * useful for 3rd party integrations such as Segment, Intercom, and Zendesk
+   */
+  async loggedIn(user: User): Promise<User> {
+    user.lastLoginAt = new Date();
+    await this.update(user.id, user);
+    return user;
   }
 
   private async hashPassword(password: string) {

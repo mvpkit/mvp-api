@@ -21,7 +21,7 @@ services:
       - .:/usr/src/app:delegated
       - /usr/src/app/node_modules
     ports:
-      - ${VIRTUAL_PORT}
+      - ${LOCAL_PORT}:${VIRTUAL_PORT}
     command: bash -c "yarn && yarn start:dev"
     env_file: ./.env
     network_mode: bridge

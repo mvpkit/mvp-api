@@ -1,10 +1,15 @@
-import { User, UserChoosePasswordDto } from './../user/user.entity';
+import {
+  User,
+  UserChoosePasswordDto,
+  UserSsoGoogleDto,
+} from './../user/user.entity';
 import { MailerService } from '@nestjs-modules/mailer';
 import {
   Injectable,
   Logger,
   UnauthorizedException,
   NotFoundException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
@@ -85,9 +90,27 @@ export class AuthService {
   }
 
   async generateAccessToken(user: User): Promise<string> {
-    return this.jwtService.sign(
-      { user: { id: user.id } },
-      { expiresIn: process.env.JWT_EXPIRATION },
-    );
+    return this.jwtService.sign({ sub: user.id });
+  }
+
+  async loginGoogle(req): Promise<User> {
+    if (!req.user) {
+      throw new InternalServerErrorException('error during google sso');
+    }
+
+    let user = await this.userService.findOne({
+      where: { email: req.user.email },
+    });
+
+    if (!user) {
+      const dto = new UserSsoGoogleDto();
+      dto.email = req.user.email;
+      dto.firstName = req.user.firstName;
+      dto.lastName = req.user.lastName;
+      dto.picture = req.user.picture;
+      user = await this.userService.create(dto);
+    }
+
+    return await this.userService.loggedIn(user);
   }
 }
