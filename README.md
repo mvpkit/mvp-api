@@ -11,6 +11,11 @@
 - auto-generated API docs via Swagger
 - ACL / Roles 
 
+##### Todo
+- [ ] add paginator support fo findAll
+- [ ] add user email verification
+- [ ] add Roles / ACL
+
 ##### Done
 - 09/20/20: added Google + Facebook SSO
 - 09/12/20: added crud generator
@@ -28,7 +33,4 @@
 - 05/01/20: create user module
 - 04/30/20: setup Nest.js
 
-##### Todo
-- [ ] add paginator support fo findAll
-- [ ] add user email verification
-- [ ] add Roles / ACL
+
