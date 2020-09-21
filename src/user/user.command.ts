@@ -1,4 +1,4 @@
-import { UserCreateDto } from './user.entity';
+import { UserRegisterDto } from './user.entity';
 import { Command } from 'nestjs-command';
 import { Injectable } from '@nestjs/common';
 import { UserService } from './user.service';
@@ -12,7 +12,7 @@ export class UserCommand {
     describe: 'create a user',
   })
   async create() {
-    const dto = new UserCreateDto();
+    const dto = new UserRegisterDto();
     dto.email = process.argv[3];
     dto.password = process.argv[4];
     const user = await this.userService.create(dto);

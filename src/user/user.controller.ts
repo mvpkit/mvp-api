@@ -21,7 +21,7 @@ import {
   User,
   UserUpdateDto,
   UserLoginDto,
-  UserCreateDto,
+  UserRegisterDto,
 } from './user.entity';
 import { UserService } from './user.service';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
@@ -70,8 +70,8 @@ export class UserController {
     summary: 'Create user',
     description: 'Creates a user record',
   })
-  async create(@Body() dto: UserCreateDto): Promise<User> {
-    return await this.userService.create(dto);
+  async create(@Body() dto: UserRegisterDto): Promise<User> {
+    return await this.userService.register(dto);
   }
 
   @Patch(':id')
