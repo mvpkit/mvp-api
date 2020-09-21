@@ -12,22 +12,23 @@
 - ACL / Roles 
 
 ##### Done
-- 04/30/20: setup Nest.js
-- 05/01/20: create user module
-- 05/01/20: create user login, register routes
-- 05/02/20: implement Passport.js + JWT
+- 09/20/20: added Google + Facebook SSO
+- 09/12/20: added crud generator
+- 09/11/20: added docker compose support
+- 05/06/20: added nodemailer to send emails (SMTP)
+- 05/06/20: added POST /auth/reset-password and /auth/choose-password
+- 05/04/20: add Swagger auto-generated documentation
+- 05/04/20: add Nestjs Swagger plugin
 - 05/03/20: add request validation pipe
 - 05/03/20: add snake casing Postgres naming strategy
 - 05/03/20: add Config module to support .env, .env.development, .env.prod, etc
 - 05/03/20: add a base.service.ts class that has base findOne(), findAll(), etc... for other services to inherit
-- 05/04/20: add Swagger auto-generated documentation
-- 05/04/20: add Nestjs Swagger plugin
-- 05/06/20: added nodemailer to send emails (SMTP)
-- 05/06/20: added POST /auth/reset-password and /auth/choose-password
-- 09/11/20: added docker compose support
-- 09/12/20: added crud generator
+- 05/02/20: implement Passport.js + JWT
+- 05/01/20: create user login, register routes
+- 05/01/20: create user module
+- 04/30/20: setup Nest.js
 
 ##### Todo
-- [ ] add Passport strategy for Google SSO
-- [ ] add Passport strategy for Facebook SSO
 - [ ] add paginator support fo findAll
+- [ ] add user email verification
+- [ ] add Roles / ACL
