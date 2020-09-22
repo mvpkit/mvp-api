@@ -95,7 +95,7 @@ export class AuthService {
     return this.jwtService.sign({ sub: user.id });
   }
 
-  async loginGoogle(req): Promise<User> {
+  async loginGoogle(req): Promise<{ user: User; meta: any }> {
     if (!req.user) {
       throw new InternalServerErrorException('error during google sso');
     }
@@ -114,7 +114,8 @@ export class AuthService {
       user = await this.userService.create(dto);
     }
 
-    return await this.userService.loggedIn(user);
+    const newUser = await this.userService.loggedIn(user);
+    return { user: newUser, meta: req.user };
   }
 
   async loginFacebook(req): Promise<User> {
