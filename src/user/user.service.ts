@@ -45,7 +45,7 @@ export class UserService {
     await this.userRepository.softDelete(id);
   }
 
-  async login(userLoginDto: UserLoginDto) {
+  async login(userLoginDto: UserLoginDto): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { email: userLoginDto.email },
     });
@@ -55,11 +55,11 @@ export class UserService {
 
     const isValid = await bcrypt.compare(userLoginDto.password, user.password);
 
-    if (isValid) {
-      await this.loggedIn(user);
-      return user;
+    if (!isValid) {
+      throw new UnauthorizedException();
     }
-    throw new UnauthorizedException();
+
+    return user;
   }
 
   async register(dto: UserRegisterDto): Promise<User> {
@@ -118,8 +118,7 @@ export class UserService {
    * useful for 3rd party integrations such as Segment, Intercom, and Zendesk
    */
   async loggedIn(user: User): Promise<User> {
-    user.lastLoginAt = new Date();
-    await this.update(user.id, user);
+    await this.update(user.id, { lastLoginAt: new Date() });
     return user;
   }
 

@@ -45,9 +45,66 @@ export class AuthService {
   }
 
   async login(userLoginDto: UserLoginDto): Promise<UserTokenDto> {
-    const user = await this.userService.login(userLoginDto);
+    let user = await this.userService.login(userLoginDto);
     if (!user) throw new UnauthorizedException();
+
     const accessToken = await this.generateAccessToken(user);
+    user = await this.userService.loggedIn(user);
+    return {
+      user,
+      accessToken,
+      expiresIn: process.env.JWT_EXPIRATION,
+    };
+  }
+
+  async loginGoogle(req): Promise<UserTokenDto> {
+    if (!req.user) {
+      throw new InternalServerErrorException('error during google sso');
+    }
+
+    let user = await this.userService.findOne({
+      where: { email: req.user.email },
+    });
+
+    if (!user) {
+      const dto = new UserSsoGoogleDto();
+      dto.source = UserSource.google;
+      dto.email = req.user.email;
+      dto.firstName = req.user.firstName;
+      dto.lastName = req.user.lastName;
+      dto.picture = req.user.picture;
+      user = await this.userService.create(dto);
+    }
+
+    const accessToken = await this.generateAccessToken(user);
+    user = await this.userService.loggedIn(user);
+    return {
+      user,
+      accessToken,
+      expiresIn: process.env.JWT_EXPIRATION,
+    };
+  }
+
+  async loginFacebook(req): Promise<UserTokenDto> {
+    if (!req.user) {
+      throw new InternalServerErrorException('error during facebook sso');
+    }
+
+    let user = await this.userService.findOne({
+      where: { email: req.user.email },
+    });
+
+    if (!user) {
+      const dto = new UserSsoFacebookDto();
+      dto.source = UserSource.facebook;
+      dto.email = req.user.email;
+      dto.firstName = req.user.firstName;
+      dto.lastName = req.user.lastName;
+      user = await this.userService.create(dto);
+    }
+
+    const accessToken = await this.generateAccessToken(user);
+    user = await this.userService.loggedIn(user);
     return {
       user,
       accessToken,
