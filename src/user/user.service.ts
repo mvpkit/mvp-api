@@ -118,8 +118,7 @@ export class UserService {
    * useful for 3rd party integrations such as Segment, Intercom, and Zendesk
    */
   async loggedIn(user: User): Promise<User> {
-    user.lastLoginAt = new Date();
-    await this.update(user.id, user);
+    await this.update(user.id, { lastLoginAt: new Date() });
     return user;
   }
 
