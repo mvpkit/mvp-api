@@ -143,57 +143,12 @@ export class AuthService {
     return this.mailerService.sendMail({
       to: user.email,
       subject: 'Forgot Password',
-      text: `Forgot your password? Click here to reset it: http://${process.env.SITE_HOST}/reset-password?token=${accessToken}`,
-      html: `Click here to reset your password: <a href="http://${process.env.SITE_HOST}/reset-password?token=${accessToken}">Reset Password</b>`,
+      text: `Forgot your password? Click here to reset it: ${process.env.WEB_EMAIL_RESET_PASWORD_URL}?accessToken=${accessToken}`,
+      html: `Click here to reset your password: <a href="${process.env.WEB_EMAIL_RESET_PASWORD_URL}?accessToken=${accessToken}">Reset Password</b>`,
     });
   }
 
   async generateAccessToken(user: User): Promise<string> {
     return this.jwtService.sign({ sub: user.id });
-  }
-
-  async loginGoogle(req): Promise<User> {
-    if (!req.user) {
-      throw new InternalServerErrorException('error during google sso');
-    }
-
-    let user = await this.userService.findOne({
-      where: { email: req.user.email },
-    });
-
-    if (!user) {
-      const dto = new UserSsoGoogleDto();
-      dto.source = UserSource.google;
-      dto.email = req.user.email;
-      dto.firstName = req.user.firstName;
-      dto.lastName = req.user.lastName;
-      dto.picture = req.user.picture;
-      user = await this.userService.create(dto);
-    }
-
-    return await this.userService.loggedIn(user);
-  }
-
-  async loginFacebook(req): Promise<User> {
-    if (!req.user) {
-      throw new InternalServerErrorException('error during facebook sso');
-    }
-
-    console.log('from facebook', req.user);
-
-    let user = await this.userService.findOne({
-      where: { email: req.user.email },
-    });
-
-    if (!user) {
-      const dto = new UserSsoFacebookDto();
-      dto.source = UserSource.facebook;
-      dto.email = req.user.email;
-      dto.firstName = req.user.firstName;
-      dto.lastName = req.user.lastName;
-      user = await this.userService.create(dto);
-    }
-
-    return await this.userService.loggedIn(user);
   }
 }
