@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 
-import { Roles } from '../decorators/roles.decorator';
+import { Roles } from '../auth/decorators/roles.decorator';
 import { User, UserRegisterDto, UserUpdateDto } from './user.entity';
 import { UserService } from './user.service';
 
