@@ -151,4 +151,49 @@ export class AuthService {
   async generateAccessToken(user: User): Promise<string> {
     return this.jwtService.sign({ sub: user.id });
   }
+
+  async loginGoogle(req): Promise<User> {
+    if (!req.user) {
+      throw new InternalServerErrorException('error during google sso');
+    }
+
+    let user = await this.userService.findOne({
+      where: { email: req.user.email },
+    });
+
+    if (!user) {
+      const dto = new UserSsoGoogleDto();
+      dto.source = UserSource.google;
+      dto.email = req.user.email;
+      dto.firstName = req.user.firstName;
+      dto.lastName = req.user.lastName;
+      dto.picture = req.user.picture;
+      user = await this.userService.create(dto);
+    }
+
+    return await this.userService.loggedIn(user);
+  }
+
+  async loginFacebook(req): Promise<User> {
+    if (!req.user) {
+      throw new InternalServerErrorException('error during facebook sso');
+    }
+
+    console.log('from facebook', req.user);
+
+    let user = await this.userService.findOne({
+      where: { email: req.user.email },
+    });
+
+    if (!user) {
+      const dto = new UserSsoFacebookDto();
+      dto.source = UserSource.facebook;
+      dto.email = req.user.email;
+      dto.firstName = req.user.firstName;
+      dto.lastName = req.user.lastName;
+      user = await this.userService.create(dto);
+    }
+
+    return await this.userService.loggedIn(user);
+  }
 }
