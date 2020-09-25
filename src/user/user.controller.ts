@@ -1,30 +1,20 @@
+import { Roles } from './../auth/decorators/roles.decorator';
 import {
   Body,
-  ConflictException,
   Controller,
   Delete,
   Get,
-  InternalServerErrorException,
   NotFoundException,
   Param,
   ParseIntPipe,
   Patch,
   Post,
   Req,
-  Request,
-  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-
-import { JwtAuthGuard } from '../auth/guards/jwt.guard';
-import {
-  User,
-  UserUpdateDto,
-  UserLoginDto,
-  UserRegisterDto,
-} from './user.entity';
-import { UserService } from './user.service';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { User, UserRegisterDto, UserUpdateDto } from './user.entity';
+import { UserService } from './user.service';
 
 @Controller('users')
 @ApiBearerAuth()
@@ -32,7 +22,7 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
+  @Roles('admin')
   @ApiOperation({
     summary: 'Get users',
     description: 'Retrieve a list of users',
@@ -41,27 +31,17 @@ export class UserController {
     return this.userService.findAll(data);
   }
 
-  @Get('me')
-  @UseGuards(JwtAuthGuard)
-  @ApiOperation({
-    summary: 'Get current user',
-    description: 'Retrieves current logged-in user',
-  })
-  currentUser(@Req() request) {
-    const user = request.user;
-    if (!user) throw new UnauthorizedException();
-    return user;
-  }
-
-  @Get(':id')
-  @UseGuards(JwtAuthGuard)
-  @ApiOperation({
-    summary: 'Get user',
-    description: 'Retrieves a user record by id',
-  })
-  async findOne(@Param('id', ParseIntPipe) id: number) {
+  @Roles('admin', '$owner')
+  @Get(':id([0-9]+|me)')
+  public async findById(
+    @Param('id', ParseIntPipe) id: number | string,
+    @Req() req,
+  ) {
+    id = id === 'me' ? req.user.id : id;
     const user = await this.userService.findOne(id);
-    if (!user) throw new NotFoundException();
+    if (!user) {
+      throw new NotFoundException();
+    }
     return user;
   }
 
@@ -74,20 +54,23 @@ export class UserController {
     return await this.userService.register(dto);
   }
 
-  @Patch(':id')
-  @UseGuards(JwtAuthGuard)
+  @Patch(':id([0-9]+|me)')
+  @Roles('admin', '$owner')
   @ApiOperation({ summary: 'Update user', description: 'Update a user record' })
   async update(
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number | string,
     @Body() dto: UserUpdateDto,
+    @Req() req,
   ): Promise<User> {
-    return await this.userService.update(id, dto);
+    id = id === 'me' ? req.user.id : id;
+    return await this.userService.update(id as number, dto);
   }
 
-  @Delete(':id')
-  @UseGuards(JwtAuthGuard)
+  @Patch(':id([0-9]+|me)')
+  @Roles('admin', '$owner')
   @ApiOperation({ summary: 'Delete user', description: 'Delete a user record' })
-  async remove(@Param('id', ParseIntPipe) id: number) {
-    return await this.userService.remove(id);
+  async remove(@Param('id', ParseIntPipe) id: number | string, @Req() req) {
+    id = id === 'me' ? req.user.id : id;
+    return await this.userService.remove(id as number);
   }
 }

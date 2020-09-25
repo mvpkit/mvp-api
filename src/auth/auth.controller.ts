@@ -3,22 +3,20 @@ import {
   Body,
   Controller,
   Get,
-  Post,
-  Request,
-  UseGuards,
   HttpCode,
+  Post,
   Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 
 import {
   UserChoosePasswordDto,
-  UserLoginDto,
   UserForgotPasswordDto,
+  UserLoginDto,
 } from '../user/user.entity';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './guards/local.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -55,7 +53,7 @@ export class AuthController {
 
   @Get('google')
   @UseGuards(AuthGuard('google'))
-  async googleAuth(@Req() req) {
+  async googleAuth(@Req() req): Promise<void> {
     return;
   }
 
@@ -74,7 +72,9 @@ export class AuthController {
 
   @Get('facebook')
   @UseGuards(AuthGuard('facebook'))
-  async facebookAuth(@Req() req) {}
+  async facebookAuth(@Req() req): Promise<void> {
+    return;
+  }
 
   @Get('facebook/callback')
   @UseGuards(AuthGuard('facebook'))

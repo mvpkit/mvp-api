@@ -8,7 +8,10 @@ import {
   Unique,
 } from 'typeorm';
 
-import { ApiProperty } from '@nestjs/swagger';
+export enum UserRoles {
+  admin = 'admin',
+  user = 'user',
+}
 
 export enum UserSource {
   facebook = 'facebook',
@@ -25,6 +28,9 @@ export class User {
   @Column({ default: UserSource.email })
   @IsNotEmpty()
   source: UserSource;
+
+  @Column('jsonb', { default: [UserRoles.user] })
+  roles: UserRoles;
 
   @Column()
   email: string;
