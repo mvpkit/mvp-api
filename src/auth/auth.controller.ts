@@ -3,21 +3,20 @@ import {
   Body,
   Controller,
   Get,
-  Post,
-  Request,
-  UseGuards,
   HttpCode,
+  Post,
   Req,
+  Res,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 
 import {
   UserChoosePasswordDto,
-  UserLoginDto,
   UserForgotPasswordDto,
+  UserLoginDto,
 } from '../user/user.entity';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './guards/local.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -54,21 +53,39 @@ export class AuthController {
 
   @Get('google')
   @UseGuards(AuthGuard('google'))
-  async googleAuth(@Req() req) {}
+  async googleAuth(@Req() req): Promise<void> {
+    return;
+  }
 
-  @Get('google/redirect')
+  @Get('google/callback')
   @UseGuards(AuthGuard('google'))
-  googleAuthRedirect(@Req() req) {
-    return this.authService.loginGoogle(req);
+  async googleAuthRedirect(@Req() req, @Res() res) {
+    try {
+      const userToken = await this.authService.loginGoogle(req);
+      res.redirect(
+        `${process.env.WEB_SSO_SUCCESS_URL}?accessToken=${userToken.accessToken}`,
+      );
+    } catch (err) {
+      res.redirect(`${process.env.WEB_SSO_FAIL_URL}`);
+    }
   }
 
   @Get('facebook')
   @UseGuards(AuthGuard('facebook'))
-  async facebookAuth(@Req() req) {}
+  async facebookAuth(@Req() req): Promise<void> {
+    return;
+  }
 
-  @Get('facebook/redirect')
+  @Get('facebook/callback')
   @UseGuards(AuthGuard('facebook'))
-  facebookAuthRedirect(@Req() req) {
-    return this.authService.loginFacebook(req);
+  async facebookAuthRedirect(@Req() req, @Res() res) {
+    try {
+      const userToken = await this.authService.loginFacebook(req);
+      res.redirect(
+        `${process.env.WEB_SSO_SUCCESS_URL}?accessToken=${userToken.accessToken}`,
+      );
+    } catch (err) {
+      res.redirect(`${process.env.WEB_SSO_FAIL_URL}`);
+    }
   }
 }
