@@ -1,4 +1,3 @@
-import { Roles } from './../auth/decorators/roles.decorator';
 import {
   Body,
   Controller,
@@ -10,9 +9,10 @@ import {
   Patch,
   Post,
   Req,
-  UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+
+import { Roles } from '../decorators/roles.decorator';
 import { User, UserRegisterDto, UserUpdateDto } from './user.entity';
 import { UserService } from './user.service';
 
@@ -66,7 +66,7 @@ export class UserController {
     return await this.userService.update(id as number, dto);
   }
 
-  @Patch(':id([0-9]+|me)')
+  @Delete(':id([0-9]+|me)')
   @Roles('admin', '$owner')
   @ApiOperation({ summary: 'Delete user', description: 'Delete a user record' })
   async remove(@Param('id', ParseIntPipe) id: number | string, @Req() req) {
