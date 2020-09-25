@@ -1,6 +1,6 @@
 # MVP Starterkit API is a rapid development API framework for shipping out MVP projects fast.
 > It's built as a rapid development framework built on top of Nest.js.
-> Suitable for MVPs, SaaS, and other startups and projects.
+> Suitable for MVPs, SaaS, and other startup projects.
 
 ### Why you'll love it
 - pre-configured Config, Auth, User, Post modules
@@ -14,9 +14,9 @@
 ##### Todo
 - [ ] add paginator support fo findAll
 - [ ] add user email verification
-- [ ] add Roles / ACL
 
 ##### Done
+- 09/25/20: asded ACl / roles
 - 09/20/20: added Google + Facebook SSO
 - 09/12/20: added crud generator
 - 09/11/20: added docker compose support
