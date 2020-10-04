@@ -1,3 +1,4 @@
+import * as bcrypt from 'bcrypt';
 import {
   User,
   UserChoosePasswordDto,
@@ -31,27 +32,24 @@ export class AuthService {
     private mailerService: MailerService,
   ) {}
 
-  async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.userService.findByEmail(username);
-
-    if (!user) throw new NotFoundException();
-
-    if (user && user.password === pass) {
-      const { password, ...result } = user;
-      return result;
+  async validateUser(userLoginDto: UserLoginDto): Promise<UserTokenDto> {
+    const user = await this.userService.findOne({
+      where: { email: userLoginDto.email },
+    });
+    if (!user) {
+      throw new UnauthorizedException();
     }
 
-    return null;
-  }
+    const isValid = await bcrypt.compare(userLoginDto.password, user.password);
 
-  async login(userLoginDto: UserLoginDto): Promise<UserTokenDto> {
-    let user = await this.userService.login(userLoginDto);
-    if (!user) throw new UnauthorizedException();
+    if (!isValid) {
+      throw new UnauthorizedException();
+    }
 
-    const accessToken = await this.generateAccessToken(user);
-    user = await this.userService.loggedIn(user);
+    const accessToken = await this.generateJwt(user);
+    const loggedInUser = await this.userService.loggedIn(user);
     return {
-      user,
+      user: loggedInUser,
       accessToken,
       expiresIn: process.env.JWT_EXPIRATION,
     };
@@ -76,7 +74,7 @@ export class AuthService {
       user = await this.userService.create(dto);
     }
 
-    const accessToken = await this.generateAccessToken(user);
+    const accessToken = await this.generateJwt(user);
     user = await this.userService.loggedIn(user);
     return {
       user,
@@ -103,7 +101,7 @@ export class AuthService {
       user = await this.userService.create(dto);
     }
 
-    const accessToken = await this.generateAccessToken(user);
+    const accessToken = await this.generateJwt(user);
     user = await this.userService.loggedIn(user);
     return {
       user,
@@ -120,7 +118,7 @@ export class AuthService {
     );
     if (!user) throw new NotFoundException();
     if (user) {
-      const accessToken = await this.generateAccessToken(user);
+      const accessToken = await this.generateJwt(user);
       const res = await this.sendResetPasswordEmail(user, accessToken);
       Logger.log(`forgot password: ${JSON.stringify(res)}`);
     }
@@ -148,7 +146,7 @@ export class AuthService {
     });
   }
 
-  async generateAccessToken(user: User): Promise<string> {
+  async generateJwt(user: User): Promise<string> {
     return this.jwtService.sign({ sub: user.id });
   }
 }

@@ -13,7 +13,12 @@ import {
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 
 import { Roles } from '../auth/decorators/roles.decorator';
-import { User, UserRegisterDto, UserUpdateDto } from './user.entity';
+import {
+  User,
+  UserRegisterDto,
+  UserTokenDto,
+  UserUpdateDto,
+} from './user.entity';
 import { UserService } from './user.service';
 
 @Controller('users')

@@ -23,13 +23,13 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('login')
-  @HttpCode(200)
+  @UseGuards(AuthGuard('local'))
   @ApiOperation({
     summary: 'Authenticate login',
     description: 'Authenticate user by email and password',
   })
-  async login(@Body() userLoginDto: UserLoginDto) {
-    return this.authService.login(userLoginDto);
+  async login(@Body() userLoginDto: UserLoginDto, @Req() req) {
+    return req.user;
   }
 
   @Post('forgot-password')
