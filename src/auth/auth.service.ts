@@ -2,8 +2,7 @@ import * as bcrypt from 'bcrypt';
 import {
   User,
   UserChoosePasswordDto,
-  UserSsoGoogleDto,
-  UserSsoFacebookDto,
+  UserLoginOauthDto,
   UserSource,
 } from './../user/user.entity';
 import { MailerService } from '@nestjs-modules/mailer';
@@ -17,7 +16,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 
 import {
-  UserLoginDto,
+  UserLoginLocalDto,
   UserForgotPasswordDto,
   UserTokenDto,
 } from '../user/user.entity';
@@ -32,7 +31,7 @@ export class AuthService {
     private mailerService: MailerService,
   ) {}
 
-  async validateUser(userLoginDto: UserLoginDto): Promise<UserTokenDto> {
+  async validateUser(userLoginDto: UserLoginLocalDto): Promise<UserTokenDto> {
     const user = await this.userService.findOne({
       where: { email: userLoginDto.email },
     });
@@ -55,7 +54,7 @@ export class AuthService {
     };
   }
 
-  async loginGoogle(req): Promise<UserTokenDto> {
+  async validateOauth(req): Promise<UserTokenDto> {
     if (!req.user) {
       throw new InternalServerErrorException('error during google sso');
     }
@@ -65,39 +64,12 @@ export class AuthService {
     });
 
     if (!user) {
-      const dto = new UserSsoGoogleDto();
+      const dto = new UserLoginOauthDto();
       dto.source = UserSource.google;
       dto.email = req.user.email;
       dto.firstName = req.user.firstName;
       dto.lastName = req.user.lastName;
       dto.picture = req.user.picture;
-      user = await this.userService.create(dto);
-    }
-
-    const accessToken = await this.generateJwt(user);
-    user = await this.userService.loggedIn(user);
-    return {
-      user,
-      accessToken,
-      expiresIn: process.env.JWT_EXPIRATION,
-    };
-  }
-
-  async loginFacebook(req): Promise<UserTokenDto> {
-    if (!req.user) {
-      throw new InternalServerErrorException('error during facebook sso');
-    }
-
-    let user = await this.userService.findOne({
-      where: { email: req.user.email },
-    });
-
-    if (!user) {
-      const dto = new UserSsoFacebookDto();
-      dto.source = UserSource.facebook;
-      dto.email = req.user.email;
-      dto.firstName = req.user.firstName;
-      dto.lastName = req.user.lastName;
       user = await this.userService.create(dto);
     }
 

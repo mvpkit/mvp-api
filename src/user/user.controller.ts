@@ -56,7 +56,7 @@ export class UserController {
     description: 'Creates a user record',
   })
   async create(@Body() dto: UserRegisterDto): Promise<User> {
-    return await this.userService.register(dto);
+    return await this.userService.create(dto);
   }
 
   @Patch(':id([0-9]+|me)')

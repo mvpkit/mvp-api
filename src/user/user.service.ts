@@ -15,8 +15,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {
   User,
   UserRegisterDto,
-  UserSsoGoogleDto,
-  UserLoginDto,
+  UserLoginOauthDto,
+  UserLoginLocalDto,
   UserUpdateDto,
   UserSource,
 } from './user.entity';
@@ -45,7 +45,7 @@ export class UserService {
     await this.userRepository.softDelete(id);
   }
 
-  async login(userLoginDto: UserLoginDto): Promise<User> {
+  async login(userLoginDto: UserLoginLocalDto): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { email: userLoginDto.email },
     });
@@ -62,14 +62,12 @@ export class UserService {
     return user;
   }
 
-  async register(dto: UserRegisterDto): Promise<User> {
-    dto.password = await this.hashPassword(dto.password);
-    return this.create(dto);
-  }
-
-  async create(dto: Partial<User>): Promise<User> {
+  async create(dto: UserRegisterDto | UserLoginOauthDto): Promise<User> {
     console.log('creating', dto);
     try {
+      if (dto.password) {
+        dto.password = await this.hashPassword(dto.password);
+      }
       const user = await this.userRepository.save(dto);
       this.sendWelcomeEmail(user);
       return user;

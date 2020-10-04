@@ -14,7 +14,8 @@ import { ApiOperation } from '@nestjs/swagger';
 import {
   UserChoosePasswordDto,
   UserForgotPasswordDto,
-  UserLoginDto,
+  UserLoginLocalDto,
+  UserTokenDto,
 } from '../user/user.entity';
 import { AuthService } from './auth.service';
 
@@ -28,7 +29,11 @@ export class AuthController {
     summary: 'Authenticate login',
     description: 'Authenticate user by email and password',
   })
-  async login(@Body() userLoginDto: UserLoginDto, @Req() req) {
+  async login(
+    @Body() userLoginDto: UserLoginLocalDto,
+    @Req() req,
+  ): Promise<UserTokenDto> {
+    console.log('req', req.user);
     return req.user;
   }
 
@@ -61,9 +66,9 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req, @Res() res) {
     try {
-      const userToken = await this.authService.loginGoogle(req);
+      const userToken = await this.authService.validateOauth(req);
       res.redirect(
-        `${process.env.WEB_SSO_SUCCESS_URL}?accessToken=${userToken.accessToken}`,
+        `${process.env.WEB_SSO_SUCCESS_URL}?accessToken=${userToken.accessToken}&oauthToken=${req.user.accessToken}`,
       );
     } catch (err) {
       res.redirect(`${process.env.WEB_SSO_FAIL_URL}`);
@@ -80,7 +85,7 @@ export class AuthController {
   @UseGuards(AuthGuard('facebook'))
   async facebookAuthRedirect(@Req() req, @Res() res) {
     try {
-      const userToken = await this.authService.loginFacebook(req);
+      const userToken = await this.authService.validateOauth(req);
       res.redirect(
         `${process.env.WEB_SSO_SUCCESS_URL}?accessToken=${userToken.accessToken}`,
       );

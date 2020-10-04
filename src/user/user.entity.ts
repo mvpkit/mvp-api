@@ -1,3 +1,5 @@
+import { Optional } from '@nestjs/common';
+import { Exclude } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsOptional, MinLength } from 'class-validator';
 import {
   Column,
@@ -35,7 +37,7 @@ export class User {
   @Column()
   email: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   password?: string;
 
   @Column({ nullable: true })
@@ -118,7 +120,7 @@ export class UserUpdateDto {
   lastLoginAt?: Date;
 }
 
-export class UserLoginDto {
+export class UserLoginLocalDto {
   @IsNotEmpty()
   @IsEmail()
   email: string;
@@ -148,7 +150,7 @@ export class UserTokenDto {
   expiresIn: string;
 }
 
-export class UserSsoGoogleDto {
+export class UserLoginOauthDto {
   @IsNotEmpty()
   @IsEmail()
   email: string;
@@ -164,22 +166,7 @@ export class UserSsoGoogleDto {
 
   @IsNotEmpty()
   lastName: string;
-}
 
-export class UserSsoFacebookDto {
-  @IsNotEmpty()
-  @IsEmail()
-  email: string;
-
-  @IsNotEmpty()
-  source: UserSource;
-
-  @IsOptional()
-  picture: string;
-
-  @IsNotEmpty()
-  firstName: string;
-
-  @IsNotEmpty()
-  lastName: string;
+  @Optional()
+  password?: string;
 }
