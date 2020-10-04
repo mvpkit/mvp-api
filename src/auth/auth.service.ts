@@ -59,24 +59,24 @@ export class AuthService {
     };
   }
 
-  async validateOauth(userInfo): Promise<UserTokenDto> {
-    if (!userInfo) {
+  async validateOauth(oauthUser): Promise<UserTokenDto> {
+    if (!oauthUser) {
       throw new InternalServerErrorException(
-        `error during ${userInfo.provider} sso`,
+        `error during ${oauthUser.provider} sso`,
       );
     }
 
     let user = await this.userService.findOne({
-      where: { email: userInfo.email },
+      where: { email: oauthUser.email },
     });
 
     if (!user) {
       const dto = new UserLoginOauthDto();
-      dto.source = userInfo.provider;
-      dto.email = userInfo.email;
-      dto.firstName = userInfo.firstName;
-      dto.lastName = userInfo.lastName;
-      dto.picture = userInfo.picture;
+      dto.source = oauthUser.provider;
+      dto.email = oauthUser.email;
+      dto.firstName = oauthUser.firstName;
+      dto.lastName = oauthUser.lastName;
+      dto.picture = oauthUser.picture;
       user = await this.userService.create(dto);
     }
 
