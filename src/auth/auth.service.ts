@@ -31,15 +31,20 @@ export class AuthService {
     private mailerService: MailerService,
   ) {}
 
-  async validateUser(userLoginDto: UserLoginLocalDto): Promise<UserTokenDto> {
+  async validateUser(dto: UserLoginLocalDto): Promise<UserTokenDto> {
     const user = await this.userService.findOne({
-      where: { email: userLoginDto.email },
+      where: { email: dto.email },
     });
+    const userPw = await this.userService.findOne({
+      where: { email: dto.email },
+      select: ['password'],
+    });
+
     if (!user) {
       throw new UnauthorizedException();
     }
 
-    const isValid = await bcrypt.compare(userLoginDto.password, user.password);
+    const isValid = await bcrypt.compare(dto.password, userPw.password);
 
     if (!isValid) {
       throw new UnauthorizedException();
