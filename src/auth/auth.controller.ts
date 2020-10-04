@@ -85,9 +85,8 @@ export class AuthController {
   @UseGuards(AuthGuard('facebook'))
   async facebookAuthRedirect(@Req() req, @Res() res) {
     try {
-      const userToken = await this.authService.validateOauth(req);
       res.redirect(
-        `${process.env.WEB_SSO_SUCCESS_URL}?accessToken=${userToken.accessToken}`,
+        `${process.env.WEB_SSO_SUCCESS_URL}?accessToken=${req.user.accessToken}&facebookOauthToken=${req.user.facebookOauthToken}`,
       );
     } catch (err) {
       res.redirect(`${process.env.WEB_SSO_FAIL_URL}`);

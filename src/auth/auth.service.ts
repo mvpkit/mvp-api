@@ -59,22 +59,24 @@ export class AuthService {
     };
   }
 
-  async validateOauth(req): Promise<UserTokenDto> {
-    if (!req.user) {
-      throw new InternalServerErrorException('error during google sso');
+  async validateOauth(userInfo): Promise<UserTokenDto> {
+    if (!userInfo) {
+      throw new InternalServerErrorException(
+        `error during ${userInfo.provider} sso`,
+      );
     }
 
     let user = await this.userService.findOne({
-      where: { email: req.user.email },
+      where: { email: userInfo.email },
     });
 
     if (!user) {
       const dto = new UserLoginOauthDto();
-      dto.source = UserSource.google;
-      dto.email = req.user.email;
-      dto.firstName = req.user.firstName;
-      dto.lastName = req.user.lastName;
-      dto.picture = req.user.picture;
+      dto.source = userInfo.provider;
+      dto.email = userInfo.email;
+      dto.firstName = userInfo.firstName;
+      dto.lastName = userInfo.lastName;
+      dto.picture = userInfo.picture;
       user = await this.userService.create(dto);
     }
 
