@@ -66,9 +66,8 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req, @Res() res) {
     try {
-      const userToken = await this.authService.validateOauth(req);
       res.redirect(
-        `${process.env.WEB_SSO_SUCCESS_URL}?accessToken=${userToken.accessToken}&oauthToken=${req.user.accessToken}`,
+        `${process.env.WEB_SSO_SUCCESS_URL}?accessToken=${req.user.accessToken}&oauthToken=${req.user.oauth.accessToken}`,
       );
     } catch (err) {
       res.redirect(`${process.env.WEB_SSO_FAIL_URL}`);
@@ -86,7 +85,7 @@ export class AuthController {
   async facebookAuthRedirect(@Req() req, @Res() res) {
     try {
       res.redirect(
-        `${process.env.WEB_SSO_SUCCESS_URL}?accessToken=${req.user.accessToken}&facebookOauthToken=${req.user.facebookOauthToken}`,
+        `${process.env.WEB_SSO_SUCCESS_URL}?accessToken=${req.user.accessToken}&oauthToken=${req.user.oauth.accessToken}`,
       );
     } catch (err) {
       res.redirect(`${process.env.WEB_SSO_FAIL_URL}`);

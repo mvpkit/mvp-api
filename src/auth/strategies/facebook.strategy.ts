@@ -23,7 +23,6 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
     done: (err: any, user: any, info?: any) => void,
   ): Promise<any> {
     const { name, emails, photos } = profile;
-
     const userToken = await this.authService.validateOauth({
       provider: UserSource.facebook,
       email: emails[0].value,

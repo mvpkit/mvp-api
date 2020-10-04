@@ -15,7 +15,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {
   User,
   UserRegisterDto,
-  UserLoginOauthDto,
   UserLoginLocalDto,
   UserUpdateDto,
   UserSource,
@@ -62,7 +61,7 @@ export class UserService {
     return user;
   }
 
-  async create(dto: UserRegisterDto | UserLoginOauthDto): Promise<User> {
+  async create(dto: UserRegisterDto): Promise<User> {
     console.log('creating', dto);
     try {
       if (dto.password) {

@@ -2,8 +2,7 @@ import * as bcrypt from 'bcrypt';
 import {
   User,
   UserChoosePasswordDto,
-  UserLoginOauthDto,
-  UserSource,
+  UserOauthProfile,
 } from './../user/user.entity';
 import { MailerService } from '@nestjs-modules/mailer';
 import {
@@ -17,11 +16,11 @@ import { JwtService } from '@nestjs/jwt';
 
 import {
   UserLoginLocalDto,
+  UserRegisterDto,
   UserForgotPasswordDto,
   UserTokenDto,
 } from '../user/user.entity';
 import { UserService } from '../user/user.service';
-import { access } from 'fs';
 
 @Injectable()
 export class AuthService {
@@ -71,7 +70,7 @@ export class AuthService {
     });
 
     if (!user) {
-      const dto = new UserLoginOauthDto();
+      const dto = new UserRegisterDto();
       dto.source = oauthUser.provider;
       dto.email = oauthUser.email;
       dto.firstName = oauthUser.firstName;
@@ -86,6 +85,10 @@ export class AuthService {
       user,
       accessToken,
       expiresIn: process.env.JWT_EXPIRATION,
+      oauth: {
+        accessToken: oauthUser.accessToken,
+        provider: oauthUser.provider,
+      },
     };
   }
 
