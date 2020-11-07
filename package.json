@@ -22,6 +22,7 @@
     "bash": "docker-compose exec api bash",
     "task": "npx nestjs-command",
     "crud": "yarn task crud:create",
+    "mock": "yarn test mock",
     "docker": "docker-compose exec api"
   },
   "dependencies": {

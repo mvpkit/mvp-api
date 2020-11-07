@@ -34,6 +34,7 @@ import { UserModule } from './user/user.module';
       logging: true,
       autoLoadEntities: true,
       namingStrategy: new SnakeNamingStrategy(),
+      keepConnectionAlive: true,
     }),
     MailerModule.forRoot({
       transport: process.env.SMTP_TRANSPORT, // SMTP_TRANSPORT=smtps://nobrainerlabs@gmail.com:secure1234@smtp.gmail.com
