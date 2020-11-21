@@ -31,6 +31,9 @@ export class AuthService {
   ) {}
 
   async validateUser(dto: UserLoginLocalDto): Promise<UserTokenDto> {
+    // set all emails to lowercase
+    dto.email = dto.email.toLowerCase();
+
     const user = await this.userService.findOne({
       where: { email: dto.email },
     });
@@ -65,6 +68,9 @@ export class AuthService {
       );
     }
 
+    // set email to lowercase
+    oauthUser.email = oauthUser.email.toLowerCase();
+
     let user = await this.userService.findOne({
       where: { email: oauthUser.email },
     });
@@ -95,6 +101,9 @@ export class AuthService {
   async forgotPassword(
     userForgotPasswordDto: UserForgotPasswordDto,
   ): Promise<void> {
+    // set email to lowercase
+    userForgotPasswordDto.email = userForgotPasswordDto.email.toLowerCase();
+
     const user = await this.userService.findByEmail(
       userForgotPasswordDto.email,
     );
