@@ -3,7 +3,7 @@ import { Command } from 'nestjs-command';
 import { Injectable, Logger } from '@nestjs/common';
 
 import { CrudService } from './crud.service';
-
+import * as camelCase from 'camelcase';
 @Injectable()
 export class CrudCommand {
   constructor(private readonly crudService: CrudService) {}
@@ -15,8 +15,9 @@ export class CrudCommand {
   async create() {
     const pluralize = require('pluralize');
     const exec = require('child_process').execSync;
-    const entity = pluralize(process.argv[3], 1).toLowerCase();
+    const entity = camelCase(pluralize(process.argv[3], 1));
     Logger.log(`Creating ./src/${entity} ... `);
+    const pascalEntity = camelCase(entity, { pascalCase: true });
 
     // create folder and copy the files from ./src/crud to ./src/${entity}
     try {

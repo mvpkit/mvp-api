@@ -24,6 +24,7 @@ describe('Mock initial data', () => {
         email: 'user@test.com',
         password: 'password',
       });
+      console.log('new user', newUser);
       expect(newUser).toHaveProperty('id');
     }
   });
