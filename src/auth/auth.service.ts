@@ -77,7 +77,7 @@ export class AuthService {
 
     if (!user) {
       const dto = new UserRegisterDto();
-      dto.source = oauthUser.provider;
+      dto.provider = oauthUser.provider;
       dto.email = oauthUser.email;
       dto.firstName = oauthUser.firstName;
       dto.lastName = oauthUser.lastName;

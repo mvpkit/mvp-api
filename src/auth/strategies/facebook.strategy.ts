@@ -1,4 +1,4 @@
-import { UserSource } from './../../user/user.entity';
+import { UserProvider } from './../../user/user.entity';
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Profile, Strategy } from 'passport-facebook';
@@ -24,7 +24,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
   ): Promise<any> {
     const { name, emails, photos } = profile;
     const payload = {
-      provider: UserSource.facebook,
+      provider: UserProvider.facebook,
       email: emails[0].value,
       firstName: name.givenName,
       lastName: name.familyName,

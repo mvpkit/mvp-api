@@ -13,7 +13,7 @@ export enum UserRoles {
   user = 'user',
 }
 
-export enum UserSource {
+export enum UserProvider {
   facebook = 'facebook',
   google = 'google',
   email = 'email',
@@ -25,9 +25,9 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ default: UserSource.email })
+  @Column({ default: UserProvider.email })
   @IsNotEmpty()
-  source: UserSource;
+  provider: UserProvider;
 
   @Column('jsonb', { default: [UserRoles.user] })
   roles: UserRoles;
@@ -86,7 +86,7 @@ export class UserRegisterDto {
   password: string;
 
   @IsOptional()
-  source?: UserSource;
+  provider?: UserProvider;
 
   @IsOptional()
   firstName?: string;
@@ -168,7 +168,7 @@ export class UserTokenDto {
   oauth?: { accessToken: string; provider: string };
 }
 export class UserOauthProfile {
-  provider: UserSource;
+  provider: UserProvider;
   email: string;
   firstName: string;
   lastName: string;

@@ -17,7 +17,7 @@ import {
   UserRegisterDto,
   UserLoginLocalDto,
   UserUpdateDto,
-  UserSource,
+  UserProvider,
 } from './user.entity';
 
 @Injectable()

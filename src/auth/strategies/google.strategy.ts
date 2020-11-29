@@ -1,4 +1,4 @@
-import { UserSource } from './../../user/user.entity';
+import { UserProvider } from './../../user/user.entity';
 import { AuthService } from './../auth.service';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, VerifyCallback, Profile } from 'passport-google-oauth20';
@@ -28,7 +28,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   ): Promise<any> {
     const { name, emails, photos } = profile;
     const payload = {
-      provider: UserSource.google,
+      provider: UserProvider.google,
       email: emails[0].value,
       firstName: name.givenName,
       lastName: name.familyName,
