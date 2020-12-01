@@ -24,7 +24,7 @@ services:
     ports:
       - ${VIRTUAL_PORT}
     command: "node dist/main"
-    env_file: ./.env.production
+    env_file: ./.env
     network_mode: bridge
     tty: true
     links:
