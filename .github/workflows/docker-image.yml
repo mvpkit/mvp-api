@@ -1,0 +1,27 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+env:
+  IMAGE_NAME: fanbird-api
+
+jobs:
+  deploy:
+    #needs: push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Remote SSH Commands
+        uses: appleboy/ssh-action@master
+        with:
+          script: |
+            cd sites/mvp-api
+            git pull
+            docker-compose build
+            docker-compose -f docker-compose.production.yml up -d
+          host: ec2-54-215-196-192.us-west-1.compute.amazonaws.com
+          username: ubuntu
+          key: ${{ secrets.PRIVATE_KEY }}
