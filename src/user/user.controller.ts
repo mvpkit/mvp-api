@@ -38,10 +38,7 @@ export class UserController {
 
   @Roles('admin', '$owner')
   @Get(':id([0-9]+|me)')
-  public async findById(
-    @Param('id', ParseIntPipe) id: number | string,
-    @Req() req,
-  ) {
+  public async findById(@Param('id') id: number | string, @Req() req) {
     id = id === 'me' ? req.user.id : id;
     const user = await this.userService.findOne(id);
     if (!user) {
