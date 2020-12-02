@@ -13,6 +13,3 @@ ENV NODE_ENV=production
 WORKDIR /usr/src/app
 ADD . /usr/src/app
 RUN yarn install --only=production
-
-
-

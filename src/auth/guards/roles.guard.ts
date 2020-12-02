@@ -47,12 +47,10 @@ export class RolesGuard extends AuthGuard('jwt') implements CanActivate {
 
     // get user from request object
     const user = request.user || { roles: [] };
-    console.log('user roles', user.roles);
     if (!user.roles) user.roles = [];
 
     // test to see if any of the user's roles are in the acceptable roles
     for (const role of user.roles) {
-      console.log('loop', role);
       if (roles.indexOf(role) > -1) {
         return true;
       }
