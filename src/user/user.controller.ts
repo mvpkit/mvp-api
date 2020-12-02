@@ -27,7 +27,7 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get()
-  @Roles('admin')
+  // @Roles('admin')
   @ApiOperation({
     summary: 'Get users',
     description: 'Retrieve a list of users',
