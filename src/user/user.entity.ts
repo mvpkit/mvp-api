@@ -82,7 +82,7 @@ export class UserRegisterDto {
   email: string;
 
   @IsNotEmpty()
-  @MinLength(8)
+  @MinLength(6)
   password: string;
 
   @IsOptional()
