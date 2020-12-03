@@ -7,7 +7,7 @@ on:
     branches: [master]
 
 env:
-  IMAGE_NAME: fanbird-api
+  IMAGE_NAME: mvp-api
 
 jobs:
   deploy:
