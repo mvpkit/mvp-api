@@ -1,5 +1,5 @@
 {
-  "name": "MVPkit API",
+  "name": "mvp-api",
   "version": "0.0.3",
   "description": "",
   "author": "jaequery@gmail.com",
@@ -11,7 +11,6 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
-    "start:dev:docker": "npm install && nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
